@@ -38,7 +38,7 @@ const validationSchema = Yup.object().shape({
       ap: Yup.string().required("Required"),
     })
   ),
-  roomImages: Yup.mixed().required("Required"),
+
 });
 
 const HotelFormStep2 = ({ onNext, onBack }) => {
@@ -93,7 +93,7 @@ const HotelFormStep2 = ({ onNext, onBack }) => {
       <Box border={1} borderRadius={1} p={2} mb={3}>
         <Typography variant="subtitle1">Room Details</Typography>
         <Grid container spacing={2} mt={1}>
-          <Grid size={{xs:12, sm:6}}>
+          <Grid size={{xs:12, sm:4}}>
             <FormControl fullWidth size="small" required>
               <InputLabel>Season Type</InputLabel>
               <Select
@@ -115,7 +115,7 @@ const HotelFormStep2 = ({ onNext, onBack }) => {
             </FormControl>
           </Grid>
 
-          <Grid size={{xs:12, sm:6}}>
+          <Grid size={{xs:12, sm:4}}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Valid From"
@@ -136,7 +136,7 @@ const HotelFormStep2 = ({ onNext, onBack }) => {
             </LocalizationProvider>
           </Grid>
 
-          <Grid size={{xs:12, sm:6}}>
+          <Grid size={{xs:12, sm:4}}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Valid Till"
@@ -183,7 +183,7 @@ const HotelFormStep2 = ({ onNext, onBack }) => {
           )}
 
           <Grid container spacing={2} mt={1}>
-            <Grid size={{xs:12, sm:6}}>
+            <Grid size={{xs:12, sm:2.4}}>
               <FormControl fullWidth size="small" required>
                 <InputLabel>Room Type</InputLabel>
                 <Select
@@ -218,8 +218,8 @@ const HotelFormStep2 = ({ onNext, onBack }) => {
             </Grid>
 
             {/* Meal Plan Fields */}
-            {["ep", "cp", "map", "ap"].map((meal, i) => (
-              <Grid size={{xs:6, sm:3}} key={meal}>
+            {["ep", "cp", "map", "ap"].map((meal) => (
+              <Grid size={{xs:6, sm:2.4}} key={meal}>
                 <TextField
                   fullWidth
                   size="small"

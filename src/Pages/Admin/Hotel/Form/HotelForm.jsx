@@ -30,7 +30,7 @@ import HotelFormStep4 from "./HotelFormStep4";
 
 const steps = ["Hotel Details", "Room Details", "Mattress Cost", "Peak Cost"];
 
-const hotelTypes = ["Resort", "Hostel", "Boutique", "Business", "Budget"];
+const hotelTypes = ["Resort","Hotel", "Hostel", "Boutique", "Business", "Budget"];
 
 const locationData = {
   India: {
@@ -67,22 +67,12 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
   cancellationPolicy: Yup.string().required("Required"),
   facilities: Yup.array().min(1, "Select at least one facility"),
-  mainImage: Yup.mixed().required("Main image is required"),
   country: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
   city: Yup.string().required("Required"),
-  address1: Yup.string().required("Required"),
-  address2: Yup.string().required("Required"),
-  address3: Yup.string().required("Required"),
+  address: Yup.string().required("Required"),
   pincode: Yup.string().required("Required"),
-  latitude: Yup.string().required("Required"),
-  longitude: Yup.string().required("Required"),
-   // website: Yup.string().url("Invalid URL").required("Required"),
-  // facebook: Yup.string().url("Invalid URL"),
-  // twitter: Yup.string().url("Invalid URL"),
-  // instagram: Yup.string().url("Invalid URL"),
-  // youtube: Yup.string().url("Invalid URL"),
-  // tripAdvisor: Yup.string().url("Invalid URL"),
+  googleLink: Yup.string().url("Invalid URL").required("Required"),
   policy: Yup.string().required("Required"),
 });
 
@@ -122,18 +112,9 @@ const HotelForm = () => {
       country: "India",
       state: "",
       city: "",
-      address1: "",
-      address2: "",
-      address3: "",
+      address: "",
       pincode: "",
-      latitude: "",
-      longitude: "",
-      website: "",
-      facebook: "",
-      twitter: "",
-      instagram: "",
-      youtube: "",
-      tripAdvisor: "",
+      googleLink: "",
       policy: "",
     },
     validationSchema,
@@ -414,24 +395,15 @@ const HotelForm = () => {
               </Grid>
 
               {/* Address and other fields */}
-              <Grid size={{xs:12, sm:4}}>
-                {renderField("address1", "Address 1")}
+              <Grid size={{xs:12, sm:8}}>
+                {renderField("address", "Address")}
               </Grid>
-              <Grid size={{xs:12, sm:4}}>
-                {renderField("address2", "Address 2")}
-              </Grid>
-              <Grid size={{xs:12, sm:4}}>
-                {renderField("address3", "Address 3")}
-              </Grid>
+            
+              
               <Grid size={{xs:12, sm:4}}>
                 {renderField("pincode", "Pincode")}
               </Grid>
-              <Grid size={{xs:12, sm:4}}>
-                {renderField("latitude", "Latitude")}
-              </Grid>
-              <Grid size={{xs:12, sm:4}}>
-                {renderField("longitude", "Longitude")}
-              </Grid>
+             
             </Grid>
           </Box>
 
@@ -439,24 +411,10 @@ const HotelForm = () => {
           <Box border={1} borderRadius={1} p={2} mb={3}>
             <Typography variant="subtitle1">Social Media</Typography>
             <Grid container spacing={2} mt={1}>
-              <Grid size={{xs:12, sm:6}}>
-                {renderField("website", "Website")}
+              <Grid size={{xs:12}}>
+                {renderField("googleLink", "Google Link")}
               </Grid>
-              <Grid size={{xs:12, sm:6}}>
-                {renderField("twitter", "Twitter")}
-              </Grid>
-              <Grid size={{xs:12, sm:6}}>
-                {renderField("facebook", "Facebook")}
-              </Grid>
-              <Grid size={{xs:12, sm:6}}>
-                {renderField("instagram", "Instagram")}
-              </Grid>
-              <Grid size={{xs:12, sm:6}}>
-                {renderField("youtube", "YouTube")}
-              </Grid>
-              <Grid size={{xs:12, sm:6}}>
-                {renderField("tripAdvisor", "TripAdvisor")}
-              </Grid>
+             
             </Grid>
           </Box>
 
