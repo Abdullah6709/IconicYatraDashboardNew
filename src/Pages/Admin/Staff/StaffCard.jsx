@@ -55,11 +55,11 @@ const StaffCard = () => {
     navigate("/staffform");
   };
 
-//   const handleEditClick = (row) => {
-//     navigate("/staff/staffeditform", {
-//       state: { staffData: row },
-//     });
-//   };
+  const handleEditClick = (row) => {
+    navigate("/staff/staffeditform", {
+      state: { staffData: row },
+    });
+  };
 
   const handleDeleteClick = (id) => {
     const updatedList = staffList.filter((staff) => staff.id !== id);

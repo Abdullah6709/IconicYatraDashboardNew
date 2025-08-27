@@ -17,6 +17,13 @@ import AssociatesEditFrom from "../Pages/Admin/Associates/Form/AssociatesEditFro
 import StaffCard from "../Pages/Admin/Staff/StaffCard";
 import StaffForm from "../Pages/Admin/Staff/Form/StaffForm";
 import LeadTourForm from "../Pages/Admin/Lead/Form/LeadTourForm";
+import QuotationCard from "../Pages/Admin/Quotation/QuotationCard";
+import VehicleQuotation from "../Pages/Admin/Quotation/VehicleQuotation/VehicleQuotation";
+import HotelQuotation from "../Pages/Admin/Quotation/HotelQuotation/hotelquotation";
+import FlightQuotation from "../Pages/Admin/Quotation/FlightQuotation/flightquotation";
+import QuickQuotation from "../Pages/Admin/Quotation/QuickQuotation/quickquotation";
+import FullQuotation from "../Pages/Admin/Quotation/FullQuotation/fullquotation";
+import CustomQuotation from "../Pages/Admin/Quotation/CustomQuotation/customquotation";
 //import StaffFormDetail from "../Pages/Admin/Staff/Form/StaffFormDetail";
 const MainRoute = () => {
   const isAuthenticated = true;
@@ -36,6 +43,15 @@ const MainRoute = () => {
         <Route path="/hotel" element={<HotelCard />} />
         <Route path="/hotelform" element={<HotelForm />} />
         <Route path="/hotel/hoteleditform" element={<HotelEditForm />} />
+
+        {/* Quotation Routing */}
+        <Route path="/quotation" element={<QuotationCard />} />
+        <Route path="/vehiclequotation" element={<VehicleQuotation />} />
+        <Route path="/hotelquotation" element={<HotelQuotation />} />
+        <Route path="/flightquotation" element={<FlightQuotation />} />
+        <Route path="/quickquotation" element={<QuickQuotation />} />
+        <Route path="/fullquotation" element={<FullQuotation />} />
+        <Route path="/customquotation" element={<CustomQuotation />} />
 
         {/* Package Routing */}
         <Route path="/tourpackage" element={<PackageCard />} />
@@ -60,5 +76,4 @@ const MainRoute = () => {
     <Navigate to="/login" />
   );
 };
-
 export default MainRoute;
