@@ -40,29 +40,87 @@ const stats = [
 const initialStaffList = [
   {
     id: 1,
-    staffId: 30,
-    staffName: "Ketan Bhikhu",
-    mobile: "7852031254",
-    email: "ketan@gmail.com",
-    city: "Delhi",
-    designation: "Noida",
+    quoteId: "Q-1001",
+    clientName: "John Doe",
+    arrival: "2025-09-05",
+    departure: "2025-09-12",
+    sector: "Europe",
+    title: "Romantic Paris Trip",
+    noOfNight: 7,
+    tourType: "International",
+    type: "Package",
+    quotationStatus: "Pending",
+    formStatus: "Incomplete",
+    businessType: "B2C",
   },
   {
     id: 2,
-    staffId: 32,
-    staffName: "Raj Kumar",
-    mobile: "7245891254",
-    email: "raj@gmail.com",
-    city: "Mumbai",
-    designation: "Delhi",
+    quoteId: "Q-1002",
+    clientName: "Alice Smith",
+    arrival: "2025-10-01",
+    departure: "2025-10-07",
+    sector: "Asia",
+    title: "Thailand Getaway",
+    noOfNight: 6,
+    tourType: "International",
+    type: "Custom",
+    quotationStatus: "Approved",
+    formStatus: "Completed",
+    businessType: "B2B",
+  },
+  {
+    id: 3,
+    quoteId: "Q-1003",
+    clientName: "Michael Johnson",
+    arrival: "2025-11-15",
+    departure: "2025-11-20",
+    sector: "Domestic",
+    title: "Goa Beach Holiday",
+    noOfNight: 5,
+    tourType: "Domestic",
+    type: "Package",
+    quotationStatus: "Rejected",
+    formStatus: "Incomplete",
+    businessType: "B2C",
+  },
+  {
+    id: 4,
+    quoteId: "Q-1004",
+    clientName: "Sophia Williams",
+    arrival: "2025-12-10",
+    departure: "2025-12-18",
+    sector: "Europe",
+    title: "Swiss Alps Adventure",
+    noOfNight: 8,
+    tourType: "International",
+    type: "Package",
+    quotationStatus: "Pending",
+    formStatus: "Completed",
+    businessType: "B2B",
+  },
+  {
+    id: 5,
+    quoteId: "Q-1005",
+    clientName: "David Brown",
+    arrival: "2026-01-03",
+    departure: "2026-01-09",
+    sector: "Asia",
+    title: "Bali Retreat",
+    noOfNight: 6,
+    tourType: "International",
+    type: "Custom",
+    quotationStatus: "Approved",
+    formStatus: "Completed",
+    businessType: "B2C",
   },
 ];
+
 
 const QuotationCard = () => {
   const [staffList, setStaffList] = useState(initialStaffList);
   const [open, setOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("");
-  const navigate = useNavigate(); // ✅ for navigation
+  const navigate = useNavigate(); 
 
   const handleDeleteClick = (id) => {
     const updatedList = staffList.filter((staff) => staff.id !== id);
@@ -93,12 +151,18 @@ const QuotationCard = () => {
 
   const columns = [
     { field: "id", headerName: "Sr No.", width: 60 },
-    { field: "staffId", headerName: "Staff Id", width: 100 },
-    { field: "staffName", headerName: "Staff Name", width: 200 },
-    { field: "mobile", headerName: "Mobile", width: 120 },
-    { field: "email", headerName: "Email", width: 220 },
-    { field: "city", headerName: "City", width: 120 },
-    { field: "designation", headerName: "Designation", width: 120 },
+    { field: "quoteId", headerName: "Quote Id", width: 100 },
+    { field: "clientName", headerName: "Client Name", width: 200 },
+    { field: "arrival", headerName: "Arrival", width: 120 },
+    { field: "departure", headerName: "Departure", width: 220 },
+    { field: "sector", headerName: "Sector", width: 120 },
+    { field: "title", headerName: "Title", width: 120 },
+    { field: "noOfNight", headerName: "No of Night", width: 120 },
+    { field: "tourType", headerName: "Tour Type", width: 120 },
+    { field: "type", headerName: "Type", width: 120 },
+    { field: "quotationStatus", headerName: "Quotation Status", width: 120 },
+    { field: "formStatus", headerName: "Form Status", width: 120 },
+    { field: "businessType", headerName: "Business Type", width: 120 },
     {
       field: "action",
       headerName: "Action",
@@ -126,7 +190,7 @@ const QuotationCard = () => {
         {/* Stat Cards */}
         <Grid container spacing={2}>
           {stats.map((item, index) => (
-            <Grid key={index} size={{xs:12, sm:6, md:4, lg:2.4}}>
+            <Grid key={index}  item xs={12} sm={6} md={4} lg={2.4}>
               <Card
                 sx={{
                   backgroundColor: "#0b6396ff",

@@ -20,19 +20,19 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import VehicleQuotationStep2 from "./vehiclequotationstep2";
+import VehicleQuotationStep2 from "./VehicleQuotationStep2";
 
 // Validation Schema
 const validationSchema = Yup.object({
   clientName: Yup.string().required("Client Name is required"),
   vehicleType: Yup.string().required("Vehicle Type is required"),
   tripType: Yup.string().required("Trip Type is required"),
-  totalCost: Yup.number().required("Total Costing is required"),
+  totalCost: Yup.number().typeError("Must be a number").required("Total Costing is required"),
 });
 
 const tripTypes = ["OneWay", "RoundTrip"];
 
-const VehicleQuotation = () => {
+const VehicleQuotationStep1 = () => {
   const [step, setStep] = useState(1);
   const [clients, setClients] = useState(["Client A", "Client B"]);
   const [vehicleTypes, setVehicleTypes] = useState([
@@ -45,7 +45,7 @@ const VehicleQuotation = () => {
   // Dialog state
   const [openDialog, setOpenDialog] = useState(false);
   const [newValue, setNewValue] = useState("");
-  const [fieldType, setFieldType] = useState(""); 
+  const [fieldType, setFieldType] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -68,7 +68,7 @@ const VehicleQuotation = () => {
     validationSchema,
     onSubmit: (values) => {
       console.log("Step 1 Form Data", values);
-      setStep(2);
+      setStep(2); // move to Step 2 and send values
     },
   });
 
@@ -120,7 +120,7 @@ const VehicleQuotation = () => {
                 Basic Details
               </Typography>
               <Grid container spacing={2} mt={1}>
-                <Grid size={{xs:12, sm:4}}>
+                <Grid size={{xs:12, sm:4}} >
                   <TextField
                     fullWidth
                     select
@@ -128,16 +128,11 @@ const VehicleQuotation = () => {
                     name="clientName"
                     value={formik.values.clientName}
                     onChange={handleClientChange}
-                    error={
-                      formik.touched.clientName &&
-                      Boolean(formik.errors.clientName)
-                    }
-                    helperText={
-                      formik.touched.clientName && formik.errors.clientName
-                    }
+                    error={formik.touched.clientName && Boolean(formik.errors.clientName)}
+                    helperText={formik.touched.clientName && formik.errors.clientName}
                   >
-                    {clients.map((client) => (
-                      <MenuItem key={client} value={client}>
+                    {clients.map((client, idx) => (
+                      <MenuItem key={idx} value={client}>
                         {client}
                       </MenuItem>
                     ))}
@@ -152,16 +147,11 @@ const VehicleQuotation = () => {
                     name="vehicleType"
                     value={formik.values.vehicleType}
                     onChange={handleVehicleChange}
-                    error={
-                      formik.touched.vehicleType &&
-                      Boolean(formik.errors.vehicleType)
-                    }
-                    helperText={
-                      formik.touched.vehicleType && formik.errors.vehicleType
-                    }
+                    error={formik.touched.vehicleType && Boolean(formik.errors.vehicleType)}
+                    helperText={formik.touched.vehicleType && formik.errors.vehicleType}
                   >
-                    {vehicleTypes.map((type) => (
-                      <MenuItem key={type} value={type}>
+                    {vehicleTypes.map((type, idx) => (
+                      <MenuItem key={idx} value={type}>
                         {type}
                       </MenuItem>
                     ))}
@@ -177,8 +167,8 @@ const VehicleQuotation = () => {
                     value={formik.values.tripType}
                     onChange={formik.handleChange}
                   >
-                    {tripTypes.map((type) => (
-                      <MenuItem key={type} value={type}>
+                    {tripTypes.map((type, idx) => (
+                      <MenuItem key={idx} value={type}>
                         {type}
                       </MenuItem>
                     ))}
@@ -245,13 +235,8 @@ const VehicleQuotation = () => {
                     name="totalCost"
                     value={formik.values.totalCost}
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.totalCost &&
-                      Boolean(formik.errors.totalCost)
-                    }
-                    helperText={
-                      formik.touched.totalCost && formik.errors.totalCost
-                    }
+                    error={formik.touched.totalCost && Boolean(formik.errors.totalCost)}
+                    helperText={formik.touched.totalCost && formik.errors.totalCost}
                   />
                 </Grid>
               </Grid>
@@ -268,7 +253,6 @@ const VehicleQuotation = () => {
                     label="Pickup Date"
                     value={formik.values.pickupDate}
                     onChange={(val) => formik.setFieldValue("pickupDate", val)}
-                    renderInput={(params) => <TextField fullWidth {...params} />}
                   />
                 </Grid>
                 <Grid size={{xs:12, sm:4}}>
@@ -276,7 +260,6 @@ const VehicleQuotation = () => {
                     label="Pickup Time"
                     value={formik.values.pickupTime}
                     onChange={(val) => formik.setFieldValue("pickupTime", val)}
-                    renderInput={(params) => <TextField fullWidth {...params} />}
                   />
                 </Grid>
                 <Grid size={{xs:12, sm:4}}>
@@ -294,7 +277,6 @@ const VehicleQuotation = () => {
                     label="Drop Date"
                     value={formik.values.dropDate}
                     onChange={(val) => formik.setFieldValue("dropDate", val)}
-                    renderInput={(params) => <TextField fullWidth {...params} />}
                   />
                 </Grid>
                 <Grid size={{xs:12, sm:4}}>
@@ -302,7 +284,6 @@ const VehicleQuotation = () => {
                     label="Drop Time"
                     value={formik.values.dropTime}
                     onChange={(val) => formik.setFieldValue("dropTime", val)}
-                    renderInput={(params) => <TextField fullWidth {...params} />}
                   />
                 </Grid>
                 <Grid size={{xs:12, sm:4}}>
@@ -327,11 +308,16 @@ const VehicleQuotation = () => {
         </Paper>
       )}
 
-      {step === 2 && <VehicleQuotationStep2 />}
+      {/* Step 2 */}
+      {step === 2 && (
+        <VehicleQuotationStep2 onBack={() => setStep(1)} step1Data={formik.values} />
+      )}
 
       {/* Add New Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Add New {fieldType === "client" ? "Client" : "Vehicle"}</DialogTitle>
+        <DialogTitle>
+          Add New {fieldType === "client" ? "Client" : "Vehicle"}
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -353,4 +339,4 @@ const VehicleQuotation = () => {
   );
 };
 
-export default VehicleQuotation;
+export default VehicleQuotationStep1;

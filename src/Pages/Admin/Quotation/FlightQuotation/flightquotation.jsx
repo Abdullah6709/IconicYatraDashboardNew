@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
@@ -11,6 +11,10 @@ import {
   FormControlLabel,
   Radio,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import {
   DatePicker,
@@ -22,6 +26,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -39,6 +44,9 @@ const validationSchema = Yup.object({
 });
 
 const QuotationFlightForm = () => {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
+
   const initialValues = {
     tripType: "oneway",
     clientName: "",
@@ -101,6 +109,11 @@ const QuotationFlightForm = () => {
       (_, i) => i !== index
     );
     formik.setFieldValue("additionalCities", updatedCities);
+  };
+
+  const handlePreview = () => {
+    setPreviewData(formik.values);
+    setPreviewOpen(true);
   };
 
   const renderFlightDetails = (prefix = "", values = formik.values) => (
@@ -166,7 +179,7 @@ const QuotationFlightForm = () => {
               "Vistara",
               "AirArabia",
               "AirDeccan",
-              "GoAir"   
+              "GoAir",
             ].map((item) => (
               <MenuItem key={item} value={`airline${item}`}>
                 {item}
@@ -314,7 +327,7 @@ const QuotationFlightForm = () => {
               "Vistara",
               "AirArabia",
               "AirDeccan",
-              "GoAir"
+              "GoAir",
             ].map((item) => (
               <MenuItem key={item} value={`airline${item}`}>
                 {item}
@@ -360,6 +373,122 @@ const QuotationFlightForm = () => {
         </Grid>
       </Grid>
     </Paper>
+  );
+
+  const PreviewDialog = () => (
+    <Dialog
+      open={previewOpen}
+      onClose={() => setPreviewOpen(false)}
+      maxWidth="md"
+      fullWidth
+    >
+      <DialogTitle>Flight Quotation Preview</DialogTitle>
+      <DialogContent>
+        {previewData && (
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              Trip Type: {previewData.tripType}
+            </Typography>
+
+            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+              Client: {previewData.clientName}
+            </Typography>
+
+            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+              Flight Details:
+            </Typography>
+            <Typography variant="body2">From: {previewData.from}</Typography>
+            <Typography variant="body2">To: {previewData.to}</Typography>
+            <Typography variant="body2">
+              Airline: {previewData.airline}
+            </Typography>
+            <Typography variant="body2">
+              Flight No: {previewData.flightNo}
+            </Typography>
+            <Typography variant="body2">Fare: {previewData.fare}</Typography>
+
+            {previewData.tripType !== "oneway" &&
+              (console.log("here is my data", previewData),
+              (
+                <>
+                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+                    Return Flight Details:
+                  </Typography>
+                  <Typography variant="body2">
+                    From: {previewData.returnfrom}
+                  </Typography>
+                  <Typography variant="body2">
+                    To: {previewData.returnto}
+                  </Typography>
+
+                  <Typography variant="body2">
+                    Airline: {previewData.returnairline}
+                  </Typography>
+                  <Typography variant="body2">
+                    Flight No: {previewData.returnflightNo}
+                  </Typography>
+                  <Typography variant="body2">
+                    Fare: {previewData.returnfare}
+                  </Typography>
+                </>
+              ))}
+
+            {previewData.additionalCities.length > 0 && (
+              <>
+                <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+                  Additional Cities:
+                </Typography>
+                {previewData.additionalCities.map((city, index) => (
+                  <Box key={index} sx={{ mb: 2 }}>
+                    <Typography variant="body2">City {index + 1}:</Typography>
+                    <Typography variant="body2">From: {city.from}</Typography>
+                    <Typography variant="body2">To: {city.to}</Typography>
+                    <Typography variant="body2">
+                      Airline: {city.airline}
+                    </Typography>
+                    <Typography variant="body2">
+                      Flight No: {city.flightNo}
+                    </Typography>
+                    <Typography variant="body2">Fare: {city.fare}</Typography>
+                  </Box>
+                ))}
+              </>
+            )}
+
+            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+              Passengers:
+            </Typography>
+            <Typography variant="body2">
+              Adults: {previewData.adults}, Children: {previewData.childs},
+              Infants: {previewData.infants}
+            </Typography>
+
+            {previewData.message && (
+              <>
+                <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+                  Message:
+                </Typography>
+                <Typography variant="body2">{previewData.message}</Typography>
+              </>
+            )}
+
+            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+              Personal Details:
+            </Typography>
+            <Typography variant="body2">
+              Name: {previewData.fullName}
+            </Typography>
+            <Typography variant="body2">
+              Mobile: {previewData.mobile}
+            </Typography>
+            <Typography variant="body2">Email: {previewData.email}</Typography>
+          </Box>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setPreviewOpen(false)}>Close</Button>
+      </DialogActions>
+    </Dialog>
   );
 
   return (
@@ -539,6 +668,14 @@ const QuotationFlightForm = () => {
             Save
           </Button>
           <Button
+            variant="outlined"
+            color="info"
+            startIcon={<VisibilityIcon />}
+            onClick={handlePreview}
+          >
+            View
+          </Button>
+          <Button
             type="reset"
             variant="outlined"
             color="secondary"
@@ -547,9 +684,10 @@ const QuotationFlightForm = () => {
             Clear Form
           </Button>
         </Box>
+
+        <PreviewDialog />
       </form>
     </LocalizationProvider>
   );
 };
-
 export default QuotationFlightForm;

@@ -1,5 +1,4 @@
-// QuotationForm.jsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -13,11 +12,19 @@ import {
   FormLabel,
   MenuItem,
   Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
-const VehicleQuotationStep2 = () => {
+const VehicleQuotationStep2 = ({ step1Data, onBack }) => {
+  const [openPreview, setOpenPreview] = useState(false);
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       marginPercent: "",
@@ -28,15 +35,20 @@ const VehicleQuotationStep2 = () => {
       contactDetails: "",
     },
     validationSchema: Yup.object({
-      marginPercent: Yup.number().typeError("Must be a number").required("Required"),
-      marginAmount: Yup.number().typeError("Must be a number").required("Required"),
+      marginPercent: Yup.number()
+        .typeError("Must be a number")
+        .required("Required"),
+      marginAmount: Yup.number()
+        .typeError("Must be a number")
+        .required("Required"),
       discount: Yup.number().typeError("Must be a number"),
       gstOption: Yup.string().required("Required"),
       taxPercent: Yup.string().required("Required"),
       contactDetails: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log("Form Values:", values);
+      console.log("Step 1 Data:", step1Data);
+      console.log("Step 2 Data:", values);
       alert("Form Submitted!");
     },
   });
@@ -54,26 +66,36 @@ const VehicleQuotationStep2 = () => {
             Company Margin
           </Typography>
           <Grid container spacing={2}>
-            <Grid size={{xs:6}}>
+            <Grid size={{ xs: 6}}>
               <TextField
                 fullWidth
                 label="Margin %"
                 name="marginPercent"
                 value={formik.values.marginPercent}
                 onChange={formik.handleChange}
-                error={formik.touched.marginPercent && Boolean(formik.errors.marginPercent)}
-                helperText={formik.touched.marginPercent && formik.errors.marginPercent}
+                error={
+                  formik.touched.marginPercent &&
+                  Boolean(formik.errors.marginPercent)
+                }
+                helperText={
+                  formik.touched.marginPercent && formik.errors.marginPercent
+                }
               />
             </Grid>
-            <Grid size={{xs:6}}>
+            <Grid size={{ xs: 6}}>
               <TextField
                 fullWidth
                 label="Margin ₹"
                 name="marginAmount"
                 value={formik.values.marginAmount}
                 onChange={formik.handleChange}
-                error={formik.touched.marginAmount && Boolean(formik.errors.marginAmount)}
-                helperText={formik.touched.marginAmount && formik.errors.marginAmount}
+                error={
+                  formik.touched.marginAmount &&
+                  Boolean(formik.errors.marginAmount)
+                }
+                helperText={
+                  formik.touched.marginAmount && formik.errors.marginAmount
+                }
               />
             </Grid>
           </Grid>
@@ -109,7 +131,11 @@ const VehicleQuotationStep2 = () => {
               onChange={formik.handleChange}
             >
               <FormControlLabel value="Full" control={<Radio />} label="Full" />
-              <FormControlLabel value="Margin" control={<Radio />} label="Margin" />
+              <FormControlLabel
+                value="Margin"
+                control={<Radio />}
+                label="Margin"
+              />
               <FormControlLabel value="None" control={<Radio />} label="None" />
             </RadioGroup>
             {formik.touched.gstOption && formik.errors.gstOption && (
@@ -126,7 +152,9 @@ const VehicleQuotationStep2 = () => {
             name="taxPercent"
             value={formik.values.taxPercent}
             onChange={formik.handleChange}
-            error={formik.touched.taxPercent && Boolean(formik.errors.taxPercent)}
+            error={
+              formik.touched.taxPercent && Boolean(formik.errors.taxPercent)
+            }
             helperText={formik.touched.taxPercent && formik.errors.taxPercent}
           >
             <MenuItem value="5%">5%</MenuItem>
@@ -149,15 +177,195 @@ const VehicleQuotationStep2 = () => {
             name="contactDetails"
             value={formik.values.contactDetails}
             onChange={formik.handleChange}
-            error={formik.touched.contactDetails && Boolean(formik.errors.contactDetails)}
-            helperText={formik.touched.contactDetails && formik.errors.contactDetails}
+            error={
+              formik.touched.contactDetails &&
+              Boolean(formik.errors.contactDetails)
+            }
+            helperText={
+              formik.touched.contactDetails && formik.errors.contactDetails
+            }
           />
         </Box>
 
-        <Button fullWidth type="submit" variant="contained" color="primary">
-          Submit
-        </Button>
+        {/* Buttons */}
+        <Box display="flex" gap={2}>
+          <Button
+            fullWidth
+            type="button"
+            variant="outlined"
+            color="secondary"
+             onClick={() => onBack()}
+          >
+            Back
+          </Button>
+
+          <Button fullWidth type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
+
+          <Button
+            fullWidth
+            type="button"
+            variant="outlined"
+            onClick={() => setOpenPreview(true)}
+          >
+            Preview
+          </Button>
+        </Box>
       </form>
+
+      {/* Preview Dialog */}
+      <Dialog
+        open={openPreview}
+        onClose={() => setOpenPreview(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        {/* Header */}
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 22,
+            bgcolor: "#f5f5f5",
+          }}
+        >
+          Iconic Yatra - Quotation Preview
+        </DialogTitle>
+
+        {/* Body */}
+        <DialogContent dividers sx={{ bgcolor: "#fafafa" }}>
+          {/* Step 1 Data */}
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              borderBottom: "2px solid #1976d2",
+              pb: 1,
+              mb: 2,
+              textAlign: "center",
+            }}
+          >
+            Vehicle & Trip Details
+          </Typography>
+
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            textAlign="center"
+            sx={{ mb: 3 }}
+          >
+            <Grid size={{ xs: 6}}>
+              <Typography>
+                <strong>Client Name</strong>
+              </Typography>
+              <Typography>{step1Data.clientName}</Typography>
+
+              <Typography>
+                <strong>Vehicle Type</strong>
+              </Typography>
+              <Typography>{step1Data.vehicleType}</Typography>
+
+              <Typography>
+                <strong>Trip Type</strong>
+              </Typography>
+              <Typography>{step1Data.tripType}</Typography>
+
+              <Typography>
+                <strong>No of Days</strong>
+              </Typography>
+              <Typography>{step1Data.noOfDays}</Typography>
+            </Grid>
+
+            <Grid size={{ xs: 6}}>
+              <Typography>
+                <strong>Total Cost</strong>
+              </Typography>
+              <Typography>₹{step1Data.totalCost}</Typography>
+
+              <Typography>
+                <strong>Pickup</strong>
+              </Typography>
+              <Typography>
+                {step1Data.pickupDate?.toLocaleDateString()}{" "}
+                {step1Data.pickupTime?.toLocaleTimeString()}
+              </Typography>
+              <Typography>{step1Data.pickupLocation}</Typography>
+
+              <Typography>
+                <strong>Drop</strong>
+              </Typography>
+              <Typography>
+                {step1Data.dropDate?.toLocaleDateString()}{" "}
+                {step1Data.dropTime?.toLocaleTimeString()}
+              </Typography>
+              <Typography>{step1Data.dropLocation}</Typography>
+            </Grid>
+          </Grid>
+
+          {/* Step 2 Data */}
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              borderBottom: "2px solid #1976d2",
+              pb: 1,
+              mb: 2,
+              textAlign: "center",
+            }}
+          >
+            Margin & Taxes
+          </Typography>
+
+          <Grid container spacing={3} justifyContent="center" textAlign="center">
+            <Grid size={{ xs: 6}}>
+              <Typography>
+                <strong>Margin %</strong>
+              </Typography>
+              <Typography>{formik.values.marginPercent}%</Typography>
+
+              <Typography>
+                <strong>Margin Amount</strong>
+              </Typography>
+              <Typography>₹{formik.values.marginAmount}</Typography>
+
+              <Typography>
+                <strong>Discount</strong>
+              </Typography>
+              <Typography>₹{formik.values.discount}</Typography>
+            </Grid>
+
+            <Grid size={{ xs: 6}}>
+              <Typography>
+                <strong>GST On</strong>
+              </Typography>
+              <Typography>{formik.values.gstOption}</Typography>
+
+              <Typography>
+                <strong>Tax %</strong>
+              </Typography>
+              <Typography>{formik.values.taxPercent}</Typography>
+
+              <Typography>
+                <strong>Contact Details</strong>
+              </Typography>
+              <Typography>{formik.values.contactDetails}</Typography>
+            </Grid>
+          </Grid>
+        </DialogContent>
+
+        {/* Footer */}
+        <DialogActions sx={{ justifyContent: "center", bgcolor: "#f5f5f5" }}>
+          <Button
+            onClick={() => setOpenPreview(false)}
+            variant="contained"
+            sx={{ bgcolor: "#1976d2" }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };
