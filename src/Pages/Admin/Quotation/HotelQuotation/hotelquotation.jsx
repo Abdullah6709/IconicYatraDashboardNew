@@ -17,7 +17,6 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-
 const clients = ["Client A", "Client B", "Client C"];
 const sectors = [
   "Andhra Pradesh",
@@ -370,6 +369,11 @@ const QuotationForm = () => {
                 rows={4}
                 value={formik.values.initialNotes}
                 onChange={formik.handleChange}
+                InputProps={{
+                  sx: {
+                    color: "#808080", 
+                  },
+                }}
               />
               <Typography variant="caption" color="green">
                 {formik.values.initialNotes.length}/200 characters
