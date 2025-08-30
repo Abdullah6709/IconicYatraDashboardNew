@@ -85,8 +85,18 @@ const QuotationForm = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <form onSubmit={formik.handleSubmit}>
-        <Paper sx={{ p: 2, mb: 2 }}>
-          <Typography variant="h6">Client Details</Typography>
+        <Paper
+          sx={{
+            p: 3,
+            mb: 3,
+            borderRadius: 2,
+            backgroundColor: "#fafafa",
+            boxShadow: 2,
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Client Details
+          </Typography>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 6 }}>
               <TextField
@@ -111,7 +121,7 @@ const QuotationForm = () => {
               </TextField>
             </Grid>
             <Grid size={{ xs: 6 }}>
-              <Typography variant="body2" sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
                 Tour Type
               </Typography>
               <RadioGroup
@@ -137,9 +147,7 @@ const QuotationForm = () => {
                 select
                 fullWidth
                 name="sector"
-                label={
-                  formik.values.tourType === "Domestic" ? "Sector" : "Sector"
-                }
+                label="Sector"
                 value={formik.values.sector}
                 onChange={formik.handleChange}
                 error={formik.touched.sector && Boolean(formik.errors.sector)}
@@ -171,27 +179,34 @@ const QuotationForm = () => {
           </Grid>
         </Paper>
 
-        <Paper sx={{ p: 2, mb: 2 }}>
-          <Typography variant="h6">Pickup/Drop</Typography>
+        <Paper
+          sx={{
+            p: 3,
+            mb: 3,
+            borderRadius: 2,
+            backgroundColor: "#fafafa",
+            boxShadow: 2,
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Pickup / Drop
+          </Typography>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 4 }}>
               <DatePicker
                 label="Arrival Date"
                 value={formik.values.arrivalDate}
                 onChange={(val) => formik.setFieldValue("arrivalDate", val)}
-                renderInput={(params) => (
-                  <TextField
-                    fullWidth
-                    {...params}
-                    error={
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error:
                       formik.touched.arrivalDate &&
-                      Boolean(formik.errors.arrivalDate)
-                    }
-                    helperText={
-                      formik.touched.arrivalDate && formik.errors.arrivalDate
-                    }
-                  />
-                )}
+                      Boolean(formik.errors.arrivalDate),
+                    helperText:
+                      formik.touched.arrivalDate && formik.errors.arrivalDate,
+                  },
+                }}
               />
             </Grid>
             <Grid size={{ xs: 4 }}>
@@ -232,20 +247,17 @@ const QuotationForm = () => {
                 label="Departure Date"
                 value={formik.values.departureDate}
                 onChange={(val) => formik.setFieldValue("departureDate", val)}
-                renderInput={(params) => (
-                  <TextField
-                    fullWidth
-                    {...params}
-                    error={
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error:
                       formik.touched.departureDate &&
-                      Boolean(formik.errors.departureDate)
-                    }
-                    helperText={
+                      Boolean(formik.errors.departureDate),
+                    helperText:
                       formik.touched.departureDate &&
-                      formik.errors.departureDate
-                    }
-                  />
-                )}
+                      formik.errors.departureDate,
+                  },
+                }}
               />
             </Grid>
             <Grid size={{ xs: 4 }}>
@@ -294,15 +306,25 @@ const QuotationForm = () => {
           </Grid>
         </Paper>
 
-        <Paper sx={{ p: 2, mb: 2 }}>
-          <Typography variant="h6">Quotation Validity</Typography>
+        <Paper
+          sx={{
+            p: 3,
+            mb: 3,
+            borderRadius: 2,
+            backgroundColor: "#fafafa",
+            boxShadow: 2,
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Quotation Validity
+          </Typography>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 6 }}>
               <DatePicker
                 label="Valid From"
                 value={formik.values.validFrom}
                 onChange={(val) => formik.setFieldValue("validFrom", val)}
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                slotProps={{ textField: { fullWidth: true } }}
               />
             </Grid>
             <Grid size={{ xs: 6 }}>
@@ -310,19 +332,28 @@ const QuotationForm = () => {
                 label="Valid Till"
                 value={formik.values.validTill}
                 onChange={(val) => formik.setFieldValue("validTill", val)}
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                slotProps={{ textField: { fullWidth: true } }}
               />
             </Grid>
           </Grid>
         </Paper>
 
-        <Paper sx={{ p: 2, mb: 2 }}>
-          <Typography variant="h6">Quotation</Typography>
+        <Paper
+          sx={{
+            p: 3,
+            mb: 3,
+            borderRadius: 2,
+            backgroundColor: "#fafafa",
+            boxShadow: 2,
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Quotation
+          </Typography>
           <Grid container spacing={2} sx={{ mt: 1 }}>
-            {/* Create By Field */}
             <Grid size={{ xs: 4 }}>
               <Box>
-                <Typography variant="body2" sx={{ mb: 1 }}>
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
                   Create By
                 </Typography>
                 <RadioGroup
@@ -336,12 +367,10 @@ const QuotationForm = () => {
                     control={<Radio />}
                     label="New Quotation"
                   />
-                  {/* If you want to add more later, just add more FormControlLabels here */}
                 </RadioGroup>
               </Box>
             </Grid>
 
-            {/* Quotation Title */}
             <Grid size={{ xs: 8 }}>
               <TextField
                 fullWidth
@@ -359,7 +388,6 @@ const QuotationForm = () => {
               />
             </Grid>
 
-            {/* Initial Notes */}
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
@@ -370,9 +398,7 @@ const QuotationForm = () => {
                 value={formik.values.initialNotes}
                 onChange={formik.handleChange}
                 InputProps={{
-                  sx: {
-                    color: "#808080", 
-                  },
+                  sx: { color: "#555" },
                 }}
               />
               <Typography variant="caption" color="green">
@@ -380,10 +406,21 @@ const QuotationForm = () => {
               </Typography>
             </Grid>
 
-            {/* Banner Upload */}
             <Grid size={{ xs: 12 }}>
-              <Button variant="outlined" component="label">
-                Choose File
+              <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+              Select Banner Image (For best view Image size - 860px X 400px)
+              </Typography>
+              <Button
+                variant="outlined"
+                component="label"
+                sx={{
+                  textTransform: "none",
+                  borderRadius: 2,
+                  px: 3,
+                  py: 1,
+                }}
+              >
+                Upload Banner
                 <input
                   type="file"
                   hidden
@@ -393,7 +430,7 @@ const QuotationForm = () => {
                 />
               </Button>
               {formik.values.banner && (
-                <Typography variant="body2" sx={{ ml: 2 }}>
+                <Typography variant="body2" sx={{ ml: 2, mt: 1 }}>
                   {formik.values.banner.name}
                 </Typography>
               )}
@@ -401,8 +438,12 @@ const QuotationForm = () => {
           </Grid>
         </Paper>
 
-        <Box textAlign="center" sx={{ mt: 2 }}>
-          <Button type="submit" variant="contained">
+        <Box textAlign="center" sx={{ mt: 3 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ px: 4, py: 1.5, borderRadius: 2 }}
+          >
             Save & Continue
           </Button>
         </Box>
