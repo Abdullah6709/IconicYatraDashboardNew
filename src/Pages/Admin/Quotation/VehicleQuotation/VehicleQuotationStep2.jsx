@@ -16,10 +16,31 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Divider,
+  Card,
+  CardContent,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import {
+  Person as PersonIcon,
+  DirectionsCar as CarIcon,
+  TripOrigin as TripIcon,
+  Event as DateIcon,
+  AttachMoney as MoneyIcon,
+  LocationOn as LocationIcon,
+  Percent as PercentIcon,
+  Discount as DiscountIcon,
+  Receipt as TaxIcon,
+  Contacts as ContactIcon,
+  LocalOffer as OfferIcon,
+  Business as BusinessIcon,
+  Phone as PhoneIcon,
+  Email as EmailIcon,
+  Place as PlaceIcon,
+  Receipt as  ReceiptIcon,
+} from "@mui/icons-material";
 
 const VehicleQuotationStep2 = ({ step1Data, onBack }) => {
   const [openPreview, setOpenPreview] = useState(false);
@@ -220,149 +241,319 @@ const VehicleQuotationStep2 = ({ step1Data, onBack }) => {
         onClose={() => setOpenPreview(false)}
         maxWidth="md"
         fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            boxShadow: 24,
+          }
+        }}
       >
         {/* Header */}
         <DialogTitle
           sx={{
             textAlign: "center",
             fontWeight: "bold",
-            fontSize: 22,
-            bgcolor: "#f5f5f5",
+            fontSize: 24,
+            bgcolor: "primary.main",
+            color: "white",
+            py: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1
           }}
         >
-          Iconic Yatra - Quotation Preview
+          <OfferIcon sx={{ fontSize: 30 }} />
+          Iconic Yatra - Vehicle Quotation Preview
         </DialogTitle>
 
         {/* Body */}
-        <DialogContent dividers sx={{ bgcolor: "#fafafa" }}>
+        <DialogContent dividers sx={{ bgcolor: "#fafafa", p: 3 }}>
+          {/* Company Info */} 
+          <Box sx={{ textAlign: "center", mb: 3 }}>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 1 }}>
+              <BusinessIcon color="primary" sx={{ mr: 1 }} />
+              <Typography variant="h6" color="primary.main">
+                Iconic Yatra Travel Services
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 2 }}>
+              <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center" }}>
+                <PlaceIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                123 Travel Street, Tourism City
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center" }}>
+                <PhoneIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                +91 98765 43210
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center" }}>
+                <EmailIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                info@iconicyatra.com
+              </Typography>
+            </Box>
+          </Box>
+          
+          <Divider sx={{ my: 2 }} />
+          
           {/* Step 1 Data */}
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              borderBottom: "2px solid #1976d2",
-              pb: 1,
-              mb: 2,
-              textAlign: "center",
-            }}
-          >
-            Vehicle & Trip Details
-          </Typography>
+          <Card sx={{ mb: 3, boxShadow: 2 }}>
+            <CardContent>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  color: "primary.main",
+                  pb: 1,
+                  mb: 2,
+                  borderBottom: "2px solid",
+                  borderColor: "primary.light",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1
+                }}
+              >
+                <TripIcon />
+                Vehicle & Trip Details
+              </Typography>
 
-          <Grid
-            container
-            spacing={3}
-            justifyContent="center"
-            textAlign="center"
-            sx={{ mb: 3 }}
-          >
-            <Grid size={{ xs: 6}}>
-              <Typography>
-                <strong>Client Name</strong>
-              </Typography>
-              <Typography>{step1Data.clientName}</Typography>
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 6}}>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <PersonIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Client Name
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {step1Data.clientName || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>Vehicle Type</strong>
-              </Typography>
-              <Typography>{step1Data.vehicleType}</Typography>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <CarIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Vehicle Type
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {step1Data.vehicleType || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>Trip Type</strong>
-              </Typography>
-              <Typography>{step1Data.tripType}</Typography>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <TripIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Trip Type
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {step1Data.tripType || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>No of Days</strong>
-              </Typography>
-              <Typography>{step1Data.noOfDays}</Typography>
-            </Grid>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <DateIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        No of Days
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {step1Data.noOfDays || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
 
-            <Grid size={{ xs: 6}}>
-              <Typography>
-                <strong>Total Cost</strong>
-              </Typography>
-              <Typography>₹{step1Data.totalCost}</Typography>
+                <Grid size={{ xs: 6}}>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <MoneyIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Total Cost
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium" color="primary.main">
+                        ₹{step1Data.totalCost || "0"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>Pickup</strong>
-              </Typography>
-              <Typography>
-                {step1Data.pickupDate?.toLocaleDateString()}{" "}
-                {step1Data.pickupTime?.toLocaleTimeString()}
-              </Typography>
-              <Typography>{step1Data.pickupLocation}</Typography>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <LocationIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Pickup
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {step1Data.pickupDate?.toLocaleDateString() || "Not specified"}{" "}
+                        {step1Data.pickupTime?.toLocaleTimeString() || ""}
+                      </Typography>
+                      <Typography variant="body2">
+                        {step1Data.pickupLocation || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>Drop</strong>
-              </Typography>
-              <Typography>
-                {step1Data.dropDate?.toLocaleDateString()}{" "}
-                {step1Data.dropTime?.toLocaleTimeString()}
-              </Typography>
-              <Typography>{step1Data.dropLocation}</Typography>
-            </Grid>
-          </Grid>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <LocationIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Drop
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {step1Data.dropDate?.toLocaleDateString() || "Not specified"}{" "}
+                        {step1Data.dropTime?.toLocaleTimeString() || ""}
+                      </Typography>
+                      <Typography variant="body2">
+                        {step1Data.dropLocation || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
 
           {/* Step 2 Data */}
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              borderBottom: "2px solid #1976d2",
-              pb: 1,
-              mb: 2,
-              textAlign: "center",
-            }}
-          >
-            Margin & Taxes
-          </Typography>
-
-          <Grid container spacing={3} justifyContent="center" textAlign="center">
-            <Grid size={{ xs: 6}}>
-              <Typography>
-                <strong>Margin %</strong>
+          <Card sx={{ boxShadow: 2 }}>
+            <CardContent>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  color: "primary.main",
+                  pb: 1,
+                  mb: 2,
+                  borderBottom: "2px solid",
+                  borderColor: "primary.light",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1
+                }}
+              >
+                <ReceiptIcon />
+                Margin & Taxes
               </Typography>
-              <Typography>{formik.values.marginPercent}%</Typography>
 
-              <Typography>
-                <strong>Margin Amount</strong>
-              </Typography>
-              <Typography>₹{formik.values.marginAmount}</Typography>
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 6}}>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <PercentIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Margin %
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {formik.values.marginPercent || "0"}%
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>Discount</strong>
-              </Typography>
-              <Typography>₹{formik.values.discount}</Typography>
-            </Grid>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <MoneyIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Margin Amount
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        ₹{formik.values.marginAmount || "0"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-            <Grid size={{ xs: 6}}>
-              <Typography>
-                <strong>GST On</strong>
-              </Typography>
-              <Typography>{formik.values.gstOption}</Typography>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <DiscountIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Discount
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium" color="green">
+                        ₹{formik.values.discount || "0"}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
 
-              <Typography>
-                <strong>Tax %</strong>
-              </Typography>
-              <Typography>{formik.values.taxPercent}</Typography>
+                <Grid size={{ xs: 6}}>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <TaxIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        GST On
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {formik.values.gstOption || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-              <Typography>
-                <strong>Contact Details</strong>
-              </Typography>
-              <Typography>{formik.values.contactDetails}</Typography>
-            </Grid>
-          </Grid>
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <PercentIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Tax %
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {formik.values.taxPercent || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ mb: 2, display: "flex", alignItems: "flex-start" }}>
+                    <ContactIcon color="primary" sx={{ mr: 1, mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Contact Details
+                      </Typography>
+                      <Typography variant="body1" fontWeight="medium">
+                        {formik.values.contactDetails || "Not specified"}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+
+          {/* Terms and Conditions */}
+          <Box sx={{ mt: 3, p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
+            <Typography variant="subtitle2" gutterBottom color="text.secondary">
+              Terms & Conditions:
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              • This quotation is valid for 7 days from the date of issue.<br />
+              • Prices are subject to change without prior notice.<br />
+              • Any additional services will be charged separately.
+            </Typography>
+          </Box>
         </DialogContent>
 
         {/* Footer */}
-        <DialogActions sx={{ justifyContent: "center", bgcolor: "#f5f5f5" }}>
+        <DialogActions sx={{ 
+          justifyContent: "center", 
+          bgcolor: "grey.100",
+          py: 2
+        }}>
           <Button
             onClick={() => setOpenPreview(false)}
             variant="contained"
-            sx={{ bgcolor: "#1976d2" }}
+            sx={{ 
+              minWidth: 120,
+              borderRadius: 2
+            }}
           >
             Close
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ 
+              minWidth: 120,
+              borderRadius: 2
+            }}
+          >
+            Print
           </Button>
         </DialogActions>
       </Dialog>

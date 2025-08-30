@@ -12,6 +12,10 @@ import {
   Radio,
   IconButton,
   Dialog,
+  Divider,
+  Chip,
+  Avatar,
+  useTheme,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -27,6 +31,15 @@ import * as Yup from "yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  FlightTakeoff,
+  FlightLand,
+  AirlineSeatReclineNormal,
+  Person,
+  Phone,
+  Email,
+  Close
+} from '@mui/icons-material';
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -46,6 +59,7 @@ const validationSchema = Yup.object({
 const QuotationFlightForm = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState(null);
+  const theme = useTheme();
 
   const initialValues = {
     tripType: "oneway",
@@ -375,121 +389,387 @@ const QuotationFlightForm = () => {
     </Paper>
   );
 
-  const PreviewDialog = () => (
-    <Dialog
+    const PreviewDialog = () => (
+        <Dialog
       open={previewOpen}
       onClose={() => setPreviewOpen(false)}
       maxWidth="md"
       fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 2,
+          overflow: 'hidden'
+        }
+      }}
     >
-      <DialogTitle>Flight Quotation Preview</DialogTitle>
-      <DialogContent>
+      <DialogTitle
+        sx={{
+          background: 'linear-gradient(135deg, #1976d2 0%, #004ba0 100%)',
+          color: 'white',
+          py: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
+        <Box display="flex" alignItems="center">
+          <FlightTakeoff sx={{ mr: 1, fontSize: 28 }} />
+          <Typography variant="h5" component="div" fontWeight="600">
+            Iconic Yatra
+          </Typography>
+        </Box>
+        <Typography variant="h6" component="div">
+          Flight Quotation Preview
+        </Typography>
+      </DialogTitle>
+
+      <DialogContent sx={{ p: 0 }}>
         {previewData && (
           <Box>
-            <Typography variant="h6" gutterBottom>
-              Trip Type: {previewData.tripType}
-            </Typography>
+            {/* Header with trip type and client */}
+            <Box sx={{ p: 3, pb: 2, background: '#f9f9f9' }}>
+              <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+                <Chip
+                  label={previewData.tripType.toUpperCase()}
+                  color="primary"
+                  variant="outlined"
+                  sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}
+                />
+                <Box textAlign="right">
+                  <Typography variant="body2" color="textSecondary">
+                    Prepared for
+                  </Typography>
+                  <Typography variant="h6" color="primary" fontWeight="600">
+                    {previewData.clientName}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
 
-            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-              Client: {previewData.clientName}
-            </Typography>
-
-            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-              Flight Details:
-            </Typography>
-            <Typography variant="body2">From: {previewData.from}</Typography>
-            <Typography variant="body2">To: {previewData.to}</Typography>
-            <Typography variant="body2">
-              Airline: {previewData.airline}
-            </Typography>
-            <Typography variant="body2">
-              Flight No: {previewData.flightNo}
-            </Typography>
-            <Typography variant="body2">Fare: {previewData.fare}</Typography>
-
-            {previewData.tripType !== "oneway" &&
-              (console.log("here is my data", previewData),
-              (
-                <>
-                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                    Return Flight Details:
-                  </Typography>
-                  <Typography variant="body2">
-                    From: {previewData.returnfrom}
-                  </Typography>
-                  <Typography variant="body2">
-                    To: {previewData.returnto}
-                  </Typography>
-
-                  <Typography variant="body2">
-                    Airline: {previewData.returnairline}
-                  </Typography>
-                  <Typography variant="body2">
-                    Flight No: {previewData.returnflightNo}
-                  </Typography>
-                  <Typography variant="body2">
-                    Fare: {previewData.returnfare}
-                  </Typography>
-                </>
-              ))}
-
-            {previewData.additionalCities.length > 0 && (
-              <>
-                <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                  Additional Cities:
-                </Typography>
-                {previewData.additionalCities.map((city, index) => (
-                  <Box key={index} sx={{ mb: 2 }}>
-                    <Typography variant="body2">City {index + 1}:</Typography>
-                    <Typography variant="body2">From: {city.from}</Typography>
-                    <Typography variant="body2">To: {city.to}</Typography>
-                    <Typography variant="body2">
-                      Airline: {city.airline}
+            {/* Flight Details */}
+            <Box sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                <FlightTakeoff sx={{ mr: 1, color: 'primary.main' }} />
+                Flight Details
+              </Typography>
+              
+              <Paper variant="outlined" sx={{ p: 2, mb: 2, background: '#fafafa' }}>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Box>
+                    <Typography variant="body2" color="textSecondary">
+                      From
                     </Typography>
-                    <Typography variant="body2">
-                      Flight No: {city.flightNo}
+                    <Typography variant="h6" fontWeight="600">
+                      {previewData.from}
                     </Typography>
-                    <Typography variant="body2">Fare: {city.fare}</Typography>
                   </Box>
-                ))}
-              </>
-            )}
+                  
+                  <Box sx={{ textAlign: 'center', flex: 1 }}>
+                    <FlightTakeoff sx={{ color: 'success.main', fontSize: 20, verticalAlign: 'middle' }} />
+                    <Box sx={{ 
+                      display: 'inline-block', 
+                      height: '2px', 
+                      width: '40px', 
+                      bgcolor: 'grey.300', 
+                      mx: 1,
+                      verticalAlign: 'middle'
+                    }} />
+                    <FlightLand sx={{ color: 'error.main', fontSize: 20, verticalAlign: 'middle' }} />
+                  </Box>
+                  
+                  <Box sx={{ textAlign: 'right' }}>
+                    <Typography variant="body2" color="textSecondary">
+                      To
+                    </Typography>
+                    <Typography variant="h6" fontWeight="600">
+                      {previewData.to}
+                    </Typography>
+                  </Box>
+                </Box>
+                
+                <Divider sx={{ my: 2 }} />
+                
+                <Box display="flex" justifyContent="space-between">
+                  <Box>
+                    <Typography variant="body2" color="textSecondary">
+                      Airline
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500">
+                      {previewData.airline}
+                    </Typography>
+                  </Box>
+                  
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" color="textSecondary">
+                      Flight No
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500">
+                      {previewData.flightNo}
+                    </Typography>
+                  </Box>
+                  
+                  <Box sx={{ textAlign: 'right' }}>
+                    <Typography variant="body2" color="textSecondary">
+                      Fare
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500" color="primary">
+                      {previewData.fare}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
 
-            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-              Passengers:
-            </Typography>
-            <Typography variant="body2">
-              Adults: {previewData.adults}, Children: {previewData.childs},
-              Infants: {previewData.infants}
-            </Typography>
+              {/* Return Flight Details */}
+              {previewData.tripType !== "oneway" && (
+                <>
+                  <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
+                    <FlightLand sx={{ mr: 1, color: 'primary.main' }} />
+                    Return Flight Details
+                  </Typography>
+                  
+                  <Paper variant="outlined" sx={{ p: 2, mb: 2, background: '#fafafa' }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Box>
+                        <Typography variant="body2" color="textSecondary">
+                          From
+                        </Typography>
+                        <Typography variant="h6" fontWeight="600">
+                          {previewData.returnfrom}
+                        </Typography>
+                      </Box>
+                      
+                      <Box sx={{ textAlign: 'center', flex: 1 }}>
+                        <FlightTakeoff sx={{ color: 'success.main', fontSize: 20, verticalAlign: 'middle' }} />
+                        <Box sx={{ 
+                          display: 'inline-block', 
+                          height: '2px', 
+                          width: '40px', 
+                          bgcolor: 'grey.300', 
+                          mx: 1,
+                          verticalAlign: 'middle'
+                        }} />
+                        <FlightLand sx={{ color: 'error.main', fontSize: 20, verticalAlign: 'middle' }} />
+                      </Box>
+                      
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography variant="body2" color="textSecondary">
+                          To
+                        </Typography>
+                        <Typography variant="h6" fontWeight="600">
+                          {previewData.returnto}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    
+                    <Divider sx={{ my: 2 }} />
+                    
+                    <Box display="flex" justifyContent="space-between">
+                      <Box>
+                        <Typography variant="body2" color="textSecondary">
+                          Airline
+                        </Typography>
+                        <Typography variant="body1" fontWeight="500">
+                          {previewData.returnairline}
+                        </Typography>
+                      </Box>
+                      
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Typography variant="body2" color="textSecondary">
+                          Flight No
+                        </Typography>
+                        <Typography variant="body1" fontWeight="500">
+                          {previewData.returnflightNo}
+                        </Typography>
+                      </Box>
+                      
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography variant="body2" color="textSecondary">
+                          Fare
+                        </Typography>
+                        <Typography variant="body1" fontWeight="500" color="primary">
+                          {previewData.returnfare}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Paper>
+                </>
+              )}
 
-            {previewData.message && (
-              <>
-                <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                  Message:
+              {/* Additional Cities */}
+              {previewData.additionalCities.length > 0 && (
+                <>
+                  <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
+                    Additional Cities
+                  </Typography>
+                  
+                  {previewData.additionalCities.map((city, index) => (
+                    <Paper key={index} variant="outlined" sx={{ p: 2, mb: 2, background: '#fafafa' }}>
+                      <Typography variant="subtitle1" fontWeight="600" gutterBottom>
+                        City {index + 1}
+                      </Typography>
+                      
+                      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                        <Box>
+                          <Typography variant="body2" color="textSecondary">
+                            From
+                          </Typography>
+                          <Typography variant="body1" fontWeight="500">
+                            {city.from}
+                          </Typography>
+                        </Box>
+                        
+                        <Box sx={{ textAlign: 'center', flex: 1 }}>
+                          <FlightTakeoff sx={{ color: 'success.main', fontSize: 20, verticalAlign: 'middle' }} />
+                          <Box sx={{ 
+                            display: 'inline-block', 
+                            height: '2px', 
+                            width: '40px', 
+                            bgcolor: 'grey.300', 
+                            mx: 1,
+                            verticalAlign: 'middle'
+                          }} />
+                          <FlightLand sx={{ color: 'error.main', fontSize: 20, verticalAlign: 'middle' }} />
+                        </Box>
+                        
+                        <Box sx={{ textAlign: 'right' }}>
+                          <Typography variant="body2" color="textSecondary">
+                            To
+                          </Typography>
+                          <Typography variant="body1" fontWeight="500">
+                            {city.to}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      
+                      <Divider sx={{ my: 1 }} />
+                      
+                      <Box display="flex" justifyContent="space-between">
+                        <Box>
+                          <Typography variant="body2" color="textSecondary">
+                            Airline
+                          </Typography>
+                          <Typography variant="body1">
+                            {city.airline}
+                          </Typography>
+                        </Box>
+                        
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="body2" color="textSecondary">
+                            Flight No
+                          </Typography>
+                          <Typography variant="body1">
+                            {city.flightNo}
+                          </Typography>
+                        </Box>
+                        
+                        <Box sx={{ textAlign: 'right' }}>
+                          <Typography variant="body2" color="textSecondary">
+                            Fare
+                          </Typography>
+                          <Typography variant="body1" color="primary">
+                            {city.fare}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Paper>
+                  ))}
+                </>
+              )}
+
+              {/* Passengers */}
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                  <AirlineSeatReclineNormal sx={{ mr: 1, color: 'primary.main' }} />
+                  Passengers
                 </Typography>
-                <Typography variant="body2">{previewData.message}</Typography>
-              </>
-            )}
+                
+                <Box display="flex" gap={2}>
+                  <Chip
+                    avatar={<Avatar>{previewData.adults}</Avatar>}
+                    label="Adults"
+                    variant="outlined"
+                    color="primary"
+                  />
+                  <Chip
+                    avatar={<Avatar>{previewData.childs}</Avatar>}
+                    label="Children"
+                    variant="outlined"
+                    color="secondary"
+                  />
+                  <Chip
+                    avatar={<Avatar>{previewData.infants}</Avatar>}
+                    label="Infants"
+                    variant="outlined"
+                  />
+                </Box>
+              </Box>
 
-            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-              Personal Details:
-            </Typography>
-            <Typography variant="body2">
-              Name: {previewData.fullName}
-            </Typography>
-            <Typography variant="body2">
-              Mobile: {previewData.mobile}
-            </Typography>
-            <Typography variant="body2">Email: {previewData.email}</Typography>
+              {/* Message */}
+              {previewData.message && (
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="h6" gutterBottom>
+                    Message
+                  </Typography>
+                  <Paper variant="outlined" sx={{ p: 2, background: '#f9f9f9' }}>
+                    <Typography variant="body2">
+                      {previewData.message}
+                    </Typography>
+                  </Paper>
+                </Box>
+              )}
+
+              {/* Personal Details */}
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Person sx={{ mr: 1, color: 'primary.main' }} />
+                  Personal Details
+                </Typography>
+                
+                <Paper variant="outlined" sx={{ p: 2 }}>
+                  <Box display="flex" alignItems="center" mb={1}>
+                    <Person sx={{ mr: 1, color: 'action.active' }} />
+                    <Typography variant="body1">
+                      {previewData.fullName}
+                    </Typography>
+                  </Box>
+                  
+                  <Box display="flex" alignItems="center" mb={1}>
+                    <Phone sx={{ mr: 1, color: 'action.active' }} />
+                    <Typography variant="body1">
+                      {previewData.mobile}
+                    </Typography>
+                  </Box>
+                  
+                  <Box display="flex" alignItems="center">
+                    <Email sx={{ mr: 1, color: 'action.active' }} />
+                    <Typography variant="body1">
+                      {previewData.email}
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Box>
+            </Box>
           </Box>
         )}
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setPreviewOpen(false)}>Close</Button>
+      
+      <DialogActions sx={{ px: 3, py: 2 }}>
+        <Button 
+          onClick={() => setPreviewOpen(false)} 
+          variant="outlined"
+          startIcon={<Close />}
+        >
+          Close
+        </Button>
+        <Button 
+          variant="contained"
+          onClick={() => window.print()}
+        >
+          Print Quotation
+        </Button>
       </DialogActions>
     </Dialog>
-  );
+    );
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
