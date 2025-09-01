@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Radio,
   Checkbox,
+  Autocomplete,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -24,6 +25,7 @@ const sectors = [
   "Assam",
   "Bihar",
   "Chhattisgarh",
+  "Delhi",
   "Goa",
   "Gujarat",
   "Haryana",
@@ -45,6 +47,15 @@ const countries = [
 
 const cities = ["Delhi", "Mumbai", "Chennai"];
 const locations = ["Airport", "Railway Station", "Hotel"];
+const services = [
+  "Air Ticket",
+  "Bus Ticket",
+  "Covid Pass",
+  "Cruise",
+  "Hotel",
+  "Vehicle",
+  "Visa",
+];
 
 const validationSchema = Yup.object({
   clientName: Yup.string().required("Required"),
@@ -52,6 +63,9 @@ const validationSchema = Yup.object({
   arrivalDate: Yup.date().required("Required"),
   departureDate: Yup.date().required("Required"),
   quotationTitle: Yup.string().required("Required"),
+  services: Yup.array()
+    .min(1, "At least one service is required")
+    .required("Required"),
 });
 
 const QuotationForm = () => {
@@ -61,6 +75,7 @@ const QuotationForm = () => {
       tourType: "Domestic",
       sector: "",
       showCostPerAdult: false,
+      services: [],
       arrivalDate: null,
       arrivalCity: "",
       arrivalLocation: "",
@@ -174,6 +189,29 @@ const QuotationForm = () => {
                   />
                 }
                 label="Show Cost Per Adult"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 12 }}>
+              <Autocomplete
+                multiple
+                options={services}
+                value={formik.values.services}
+                onChange={(event, newValue) => {
+                  formik.setFieldValue("services", newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Services Required"
+                    error={
+                      formik.touched.services && Boolean(formik.errors.services)
+                    }
+                    helperText={
+                      formik.touched.services && formik.errors.services
+                    }
+                  />
+                )}
               />
             </Grid>
           </Grid>
@@ -408,7 +446,7 @@ const QuotationForm = () => {
 
             <Grid size={{ xs: 12 }}>
               <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
-              Select Banner Image (For best view Image size - 860px X 400px)
+                Select Banner Image (For best view Image size - 860px X 400px)
               </Typography>
               <Button
                 variant="outlined"

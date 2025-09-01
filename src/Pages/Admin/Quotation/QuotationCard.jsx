@@ -47,10 +47,10 @@ const initialStaffList = [
     sector: "Europe",
     title: "Romantic Paris Trip",
     noOfNight: 7,
-    tourType: "International",
+    tourType: "Flight",
     type: "Package",
     quotationStatus: "Pending",
-    formStatus: "Incomplete",
+    formStatus: "FlightQuotation",
     businessType: "B2C",
   },
   {
@@ -62,10 +62,10 @@ const initialStaffList = [
     sector: "Asia",
     title: "Thailand Getaway",
     noOfNight: 6,
-    tourType: "International",
+    tourType: "Flight",
     type: "Custom",
     quotationStatus: "Approved",
-    formStatus: "Completed",
+    formStatus: "FlightQuotation",
     businessType: "B2B",
   },
   {
@@ -80,7 +80,7 @@ const initialStaffList = [
     tourType: "Domestic",
     type: "Package",
     quotationStatus: "Rejected",
-    formStatus: "Incomplete",
+    formStatus: "vehiclequotation",
     businessType: "B2C",
   },
   {
@@ -92,10 +92,10 @@ const initialStaffList = [
     sector: "Europe",
     title: "Swiss Alps Adventure",
     noOfNight: 8,
-    tourType: "International",
+    tourType: "Domestic",
     type: "Package",
     quotationStatus: "Pending",
-    formStatus: "Completed",
+    formStatus: "QuickQuotatin",
     businessType: "B2B",
   },
   {
@@ -107,14 +107,13 @@ const initialStaffList = [
     sector: "Asia",
     title: "Bali Retreat",
     noOfNight: 6,
-    tourType: "International",
+    tourType: "Flight",
     type: "Custom",
     quotationStatus: "Approved",
-    formStatus: "Completed",
+    formStatus: "FlightQuotation",
     businessType: "B2C",
   },
 ];
-
 
 const QuotationCard = () => {
   const [staffList, setStaffList] = useState(initialStaffList);
@@ -131,7 +130,6 @@ const QuotationCard = () => {
   const handleClose = () => setOpen(false);
 
   const handleNext = () => {
-    console.log("Selected Quotation Type:", selectedType);
     handleClose();
 
     if (selectedType === "vehicle") {
@@ -190,7 +188,7 @@ const QuotationCard = () => {
         {/* Stat Cards */}
         <Grid container spacing={2}>
           {stats.map((item, index) => (
-            <Grid key={index}  item xs={12} sm={6} md={4} lg={2.4}>
+            <Grid key={index} item xs={12} sm={6} md={4} lg={2.4}>
               <Card
                 sx={{
                   backgroundColor: "#0b6396ff",
@@ -261,6 +259,16 @@ const QuotationCard = () => {
               rowsPerPageOptions={[7, 25, 50, 100]}
               autoHeight
               disableRowSelectionOnClick
+              onRowClick={(params) => {
+                if (params.row.formStatus === "FlightQuotation") {
+                  navigate("/flightfinalize");
+                } else if (params.row.formStatus === "vehiclequotation") {
+                  navigate("/vehiclefinalize");
+                } else {
+                  navigate(`/quotation/${params.row.id}`);
+                }
+              }}
+              sx={{ cursor: "pointer" }}
             />
           </Box>
         </Box>
