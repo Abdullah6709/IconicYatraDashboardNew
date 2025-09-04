@@ -25,6 +25,7 @@ import QuickQuotation from "../Pages/Admin/Quotation/QuickQuotation/quickquotati
 import FullQuotation from "../Pages/Admin/Quotation/FullQuotation/fullquotation";
 import CustomQuotation from "../Pages/Admin/Quotation/CustomQuotation/customquotation";
 import FlightFinalize from "../Pages/Admin/Quotation/FlightQuotation/FlightFinalize";
+import VehicleFinalize from "../Pages/Admin/Quotation/VehicleQuotation/VehicleFinalize";
 //import StaffFormDetail from "../Pages/Admin/Staff/Form/StaffFormDetail";
 const MainRoute = () => {
   const isAuthenticated = true;
@@ -55,6 +56,7 @@ const MainRoute = () => {
         <Route path="/customquotation" element={<CustomQuotation />} />
 
         <Route path="/flightfinalize" element={<FlightFinalize />} />
+        <Route path="/vehiclefinalize" element={<VehicleFinalize />} />
 
         {/* Package Routing */}
         <Route path="/tourpackage" element={<PackageCard />} />

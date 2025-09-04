@@ -19,7 +19,7 @@ import {
   Radio,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -32,9 +32,24 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 const stats = [
   { title: "Today's", confirmed: 0, inProcess: 0, cancelledIncomplete: 0 },
   { title: "This Month", confirmed: 0, inProcess: 0, cancelledIncomplete: 0 },
-  { title: "Last 3 Months", confirmed: 0, inProcess: 0, cancelledIncomplete: 0 },
-  { title: "Last 6 Months", confirmed: 0, inProcess: 0, cancelledIncomplete: 0 },
-  { title: "Last 12 Months", confirmed: 15, inProcess: 0, cancelledIncomplete: 0 },
+  {
+    title: "Last 3 Months",
+    confirmed: 0,
+    inProcess: 0,
+    cancelledIncomplete: 0,
+  },
+  {
+    title: "Last 6 Months",
+    confirmed: 0,
+    inProcess: 0,
+    cancelledIncomplete: 0,
+  },
+  {
+    title: "Last 12 Months",
+    confirmed: 15,
+    inProcess: 0,
+    cancelledIncomplete: 0,
+  },
 ];
 
 const initialStaffList = [
@@ -119,7 +134,7 @@ const QuotationCard = () => {
   const [staffList, setStaffList] = useState(initialStaffList);
   const [open, setOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleDeleteClick = (id) => {
     const updatedList = staffList.filter((staff) => staff.id !== id);
@@ -165,15 +180,26 @@ const QuotationCard = () => {
       field: "action",
       headerName: "Action",
       width: 80,
+      sortable: false,
+      filterable: false,
       renderCell: (params) => (
         <Box display="flex" gap={1}>
-          <IconButton color="primary" size="small">
+          <IconButton
+            color="primary"
+            size="small"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
             <EditIcon fontSize="small" />
           </IconButton>
           <IconButton
             color="error"
             size="small"
-            onClick={() => handleDeleteClick(params.row.id)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleDeleteClick(params.row.id);
+            }}
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
@@ -200,7 +226,9 @@ const QuotationCard = () => {
                   <Typography variant="h6">
                     {item.title}: {item.confirmed}
                   </Typography>
-                  <Typography variant="body2">Confirmed: {item.confirmed}</Typography>
+                  <Typography variant="body2">
+                    Confirmed: {item.confirmed}
+                  </Typography>
                   <Typography variant="body2">
                     In Process: {item.inProcess}
                   </Typography>
@@ -291,7 +319,9 @@ const QuotationCard = () => {
                   sx={{
                     height: "100%",
                     border:
-                      selectedType === "full" ? "2px solid #0b6396ff" : "1px solid #ddd",
+                      selectedType === "full"
+                        ? "2px solid #0b6396ff"
+                        : "1px solid #ddd",
                   }}
                 >
                   <CardContent>
@@ -300,7 +330,10 @@ const QuotationCard = () => {
                       control={<Radio />}
                       label={
                         <Box textAlign="center">
-                          <ShoppingBasketIcon fontSize="large" sx={{ color: "#0b6396ff" }} />
+                          <ShoppingBasketIcon
+                            fontSize="large"
+                            sx={{ color: "#0b6396ff" }}
+                          />
                           <Typography>Full Quotation</Typography>
                         </Box>
                       }
@@ -315,7 +348,9 @@ const QuotationCard = () => {
                   sx={{
                     height: "100%",
                     border:
-                      selectedType === "quick" ? "2px solid #0b6396ff" : "1px solid #ddd",
+                      selectedType === "quick"
+                        ? "2px solid #0b6396ff"
+                        : "1px solid #ddd",
                   }}
                 >
                   <CardContent>
@@ -324,7 +359,10 @@ const QuotationCard = () => {
                       control={<Radio />}
                       label={
                         <Box textAlign="center">
-                          <QuestionAnswerIcon fontSize="large" sx={{ color: "#0b6396ff" }} />
+                          <QuestionAnswerIcon
+                            fontSize="large"
+                            sx={{ color: "#0b6396ff" }}
+                          />
                           <Typography>Quick Quotation</Typography>
                         </Box>
                       }
@@ -339,7 +377,9 @@ const QuotationCard = () => {
                   sx={{
                     height: "100%",
                     border:
-                      selectedType === "hotel" ? "2px solid #0b6396ff" : "1px solid #ddd",
+                      selectedType === "hotel"
+                        ? "2px solid #0b6396ff"
+                        : "1px solid #ddd",
                   }}
                 >
                   <CardContent>
@@ -348,7 +388,10 @@ const QuotationCard = () => {
                       control={<Radio />}
                       label={
                         <Box textAlign="center">
-                          <HotelIcon fontSize="large" sx={{ color: "#0b6396ff" }} />
+                          <HotelIcon
+                            fontSize="large"
+                            sx={{ color: "#0b6396ff" }}
+                          />
                           <Typography>Hotel</Typography>
                         </Box>
                       }
@@ -363,7 +406,9 @@ const QuotationCard = () => {
                   sx={{
                     height: "100%",
                     border:
-                      selectedType === "vehicle" ? "2px solid #0b6396ff" : "1px solid #ddd",
+                      selectedType === "vehicle"
+                        ? "2px solid #0b6396ff"
+                        : "1px solid #ddd",
                   }}
                 >
                   <CardContent>
@@ -372,7 +417,10 @@ const QuotationCard = () => {
                       control={<Radio />}
                       label={
                         <Box textAlign="center">
-                          <DirectionsCarIcon fontSize="large" sx={{ color: "#0b6396ff" }} />
+                          <DirectionsCarIcon
+                            fontSize="large"
+                            sx={{ color: "#0b6396ff" }}
+                          />
                           <Typography>Vehicle</Typography>
                         </Box>
                       }
@@ -387,7 +435,9 @@ const QuotationCard = () => {
                   sx={{
                     height: "100%",
                     border:
-                      selectedType === "flight" ? "2px solid #0b6396ff" : "1px solid #ddd",
+                      selectedType === "flight"
+                        ? "2px solid #0b6396ff"
+                        : "1px solid #ddd",
                   }}
                 >
                   <CardContent>
@@ -396,7 +446,10 @@ const QuotationCard = () => {
                       control={<Radio />}
                       label={
                         <Box textAlign="center">
-                          <FlightIcon fontSize="large" sx={{ color: "#0b6396ff" }} />
+                          <FlightIcon
+                            fontSize="large"
+                            sx={{ color: "#0b6396ff" }}
+                          />
                           <Typography>Flight</Typography>
                         </Box>
                       }
@@ -411,7 +464,9 @@ const QuotationCard = () => {
                   sx={{
                     height: "100%",
                     border:
-                      selectedType === "custom" ? "2px solid #0b6396ff" : "1px solid #ddd",
+                      selectedType === "custom"
+                        ? "2px solid #0b6396ff"
+                        : "1px solid #ddd",
                   }}
                 >
                   <CardContent>
@@ -420,7 +475,11 @@ const QuotationCard = () => {
                       control={<Radio />}
                       label={
                         <Box textAlign="center">
-                          <Typography variant="h4" fontWeight="bold" sx={{ color: "#0b6396ff" }}>
+                          <Typography
+                            variant="h4"
+                            fontWeight="bold"
+                            sx={{ color: "#0b6396ff" }}
+                          >
                             CQ
                           </Typography>
                           <Typography>Custom Quotation</Typography>
@@ -435,7 +494,11 @@ const QuotationCard = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleNext} disabled={!selectedType}>
+          <Button
+            variant="contained"
+            onClick={handleNext}
+            disabled={!selectedType}
+          >
             Next
           </Button>
         </DialogActions>

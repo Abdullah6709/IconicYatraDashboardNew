@@ -371,7 +371,7 @@ const FlightFinalize = () => {
                 </Typography>
               </Grid>
 
-                <Grid size={{xs:12, md:6}}>
+                {/* <Grid size={{xs:12, md:6}}>
                 <Box display="flex" alignItems="center" mb={1}>
                   <Luggage color="primary" sx={{ mr: 1 }} />
                   <Typography variant="body2" fontWeight="bold">
@@ -382,7 +382,7 @@ const FlightFinalize = () => {
                   {quotation.flight.baggage}
                 </Typography>
               </Grid>
-              
+               */}
               <Grid size={{xs:12, md:6}}>
                 <Box display="flex" alignItems="center" mb={1}>
                   <Group color="primary" sx={{ mr: 1 }} />
