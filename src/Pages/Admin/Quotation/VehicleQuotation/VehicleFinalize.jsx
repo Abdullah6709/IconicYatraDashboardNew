@@ -3,7 +3,9 @@ import {
   Box, Grid, Typography, Button, Card, CardContent, Table, TableBody,
   TableCell, TableContainer, TableHead, TableRow, Paper, List, ListItem,
   ListItemText, Chip, useTheme, useMediaQuery, Accordion,
-  AccordionSummary, AccordionDetails
+  AccordionSummary, AccordionDetails, Dialog, DialogTitle,
+  DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem,
+  Checkbox, FormControlLabel
 } from "@mui/material";
 import {
   DirectionsCar, Payment, Phone, AlternateEmail, CreditCard, Description,
@@ -16,6 +18,19 @@ const VehicleQuotationPage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [activeInfo, setActiveInfo] = useState(null);
 
+  // dialog states
+  const [openFinalize, setOpenFinalize] = useState(false);
+  const [vendor, setVendor] = useState("");
+  const [showAll, setShowAll] = useState(false);
+
+  const handleFinalizeOpen = () => setOpenFinalize(true);
+  const handleFinalizeClose = () => setOpenFinalize(false);
+
+  const handleConfirm = () => {
+    console.log("Vendor:", vendor, "Show All:", showAll);
+    setOpenFinalize(false);
+  };
+
   const q = {
     actions: ["Finalize", "Vehicle Details", "Add Service", "Email Quotation", "Preview PDF", "Make Payment"],
     customer: { name: "Amit Jaiswal", location: "Andhra Pradesh" },
@@ -26,9 +41,16 @@ const VehicleQuotationPage = () => {
     },
     guests: "6 Adults",
     itineraryNote: "This is only tentative schedule for sightseeing and travel...",
-    vehicles: [{ name: "ERTIGA", pickup: { date: "22/08/2025", time: "3:35PM" }, drop: { date: "06/09/2025", time: "6:36PM" }, cost: "₹ 2,000" }],
+    vehicles: [
+      { name: "ERTIGA", pickup: { date: "22/08/2025", time: "3:35PM" }, drop: { date: "06/09/2025", time: "6:36PM" }, cost: "₹ 2,000" }
+    ],
     discount: "₹ 200", gst: "₹ 140", total: "₹ 3,340",
-    inclusions: ["All transfers tours in a Private AC cab.", "Parking, Toll charges, Fuel and Driver expenses.", "Hotel Taxes.", "Car AC off during hill stations."],
+    inclusions: [
+      "All transfers tours in a Private AC cab.",
+      "Parking, Toll charges, Fuel and Driver expenses.",
+      "Hotel Taxes.",
+      "Car AC off during hill stations."
+    ],
     exclusions: "1. Any Cost change... (rest of exclusions)",
     paymentPolicy: "50% amount to pay at confirmation, balance before 10 days.",
     cancellationPolicy: "1. Before 15 days: 50%. 2. Within 7 days: 100%.",
@@ -63,8 +85,17 @@ const VehicleQuotationPage = () => {
 
   return (
     <Box>
+      {/* Action Buttons */}
       <Box display="flex" justifyContent="flex-end" gap={1} mb={2} flexWrap="wrap">
-        {q.actions.map((a, i) => <Button key={i} variant="contained">{a}</Button>)}
+        {q.actions.map((a, i) => (
+          <Button
+            key={i}
+            variant="contained"
+            onClick={a === "Finalize" ? handleFinalizeOpen : undefined}
+          >
+            {a}
+          </Button>
+        ))}
       </Box>
 
       <Grid container spacing={2}>
@@ -147,7 +178,7 @@ const VehicleQuotationPage = () => {
             {/* Policies */}
             <Grid container spacing={2} mt={1}>
               {Policies.map((p, i) => (
-                <Grid size={{xs:12, md:3}} key={i}>
+                <Grid size={{xs:12}} key={i}>
                   <Card variant="outlined"><CardContent>
                     <Typography variant="subtitle2" gutterBottom display="flex" alignItems="center">{p.icon}{p.title}</Typography>
                     <Typography variant="body2">{p.content}</Typography>
@@ -173,6 +204,34 @@ const VehicleQuotationPage = () => {
           </CardContent></Card>
         </Grid>
       </Grid>
+
+      {/* Finalize Dialog */}
+      <Dialog open={openFinalize} onClose={handleFinalizeClose} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ color: "primary.main" }}>Vehicle Vendor</DialogTitle>
+        <DialogContent>
+          <FormControlLabel
+            control={<Checkbox checked={showAll} onChange={(e) => setShowAll(e.target.checked)} />}
+            label="Show All"
+            sx={{ float: "right", mt: -1 }}
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel required>Vehicle Vendor</InputLabel>
+               <Select value={vendor} onChange={(e) => setVendor(e.target.value)} displayEmpty>
+              <MenuItem value="Default Vehicle Vendor">Default Vehicle Vendor</MenuItem>
+              <MenuItem value="Sukhbir Lepcha">Sukhbir Lepcha</MenuItem>
+               <MenuItem value="Ketan Bhikhu">Ketan Bhikhu</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} variant="contained" disabled={!vendor} sx={{ bgcolor: "skyblue", "&:hover": { bgcolor: "deepskyblue" } }}>
+            Confirm
+          </Button>
+          <Button onClick={handleFinalizeClose} variant="contained" sx={{ bgcolor: "darkorange", "&:hover": { bgcolor: "orange" } }}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
