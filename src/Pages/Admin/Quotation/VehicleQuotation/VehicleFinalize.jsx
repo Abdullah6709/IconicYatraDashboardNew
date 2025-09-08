@@ -20,21 +20,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Checkbox,
-  FormControlLabel,
-  TextField,
   IconButton,
-  Radio,
-  RadioGroup,
-  FormLabel,
 } from "@mui/material";
 import {
   DirectionsCar,
@@ -56,17 +42,21 @@ import {
   Language,
   ExpandMore,
   Edit,
-  Add,
-  Delete,
+  Receipt,
 } from "@mui/icons-material";
-import EmailQuotationDialog from "./EmailQuotationDialog";
-import MakePaymentDialog from "./MakePaymentDialog";
+import EmailQuotationDialog from "././Dialog/EmailQuotationDialog";
+import MakePaymentDialog from "././Dialog/MakePaymentDialog";
+import FinalizeDialog from "././Dialog/FinalizeDialog";
+import BankDetailsDialog from "././Dialog/BankDetailsDialog";
+import AddBankDialog from "././Dialog/AddBankDialog";
+import EditDialog from "././Dialog/EditDialog";
+import AddServiceDialog from "././Dialog/AddServiceDialog";
 
 const VehicleQuotationPage = () => {
   const [activeInfo, setActiveInfo] = useState(null);
   const [openFinalize, setOpenFinalize] = useState(false);
   const [vendor, setVendor] = useState("");
-  const [showAll, setShowAll] = useState(false);
+  const [isFinalized, setIsFinalized] = useState(false);
   const [editDialog, setEditDialog] = useState({
     open: false,
     field: "",
@@ -88,6 +78,33 @@ const VehicleQuotationPage = () => {
   const [openEmailDialog, setOpenEmailDialog] = useState(false);
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
 
+  // Bank Details Dialog State
+  const [openBankDialog, setOpenBankDialog] = useState(false);
+  const [accountType, setAccountType] = useState("company");
+  const [accountName, setAccountName] = useState("Iconic Yatra");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [ifscCode, setIfscCode] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [branchName, setBranchName] = useState("");
+
+  // Add New Bank Dialog State
+  const [openAddBankDialog, setOpenAddBankDialog] = useState(false);
+  const [newBankDetails, setNewBankDetails] = useState({
+    bankName: "",
+    branchName: "",
+    accountHolderName: "",
+    accountNumber: "",
+    ifscCode: "",
+    openingBalance: "",
+  });
+
+  // Account options for dropdown
+  const [accountOptions, setAccountOptions] = useState([
+    { value: "Cash", label: "Cash" },
+    { value: "KOTAK Bank", label: "KOTAK Bank" },
+    { value: "YES Bank", label: "YES Bank" },
+  ]);
+
   const taxOptions = [
     { value: "gst5", label: "GST 5%", rate: 5 },
     { value: "gst18", label: "GST 18%", rate: 18 },
@@ -102,7 +119,7 @@ const VehicleQuotationPage = () => {
       "Preview PDF",
       "Make Payment",
     ],
-    customer: { name: "Amit Jaiswal", location: "Andhra Pradesh" },
+    customer: { name: "Amit Jaiswal", location: "Andhya Pradesh" },
     date: "27/08/2025",
     reference: "41",
     pickup: {
@@ -115,7 +132,7 @@ const VehicleQuotationPage = () => {
     vehicles: [
       {
         name: "ERTIGA",
-        pickup: { date: "22/08/2025", time: "3:35PM" }, 
+        pickup: { date: "22/08/2025", time: "3:35PM" },
         drop: { date: "06/09/2025", time: "6:36PM" },
         cost: "₹ 2,000",
       },
@@ -147,11 +164,12 @@ const VehicleQuotationPage = () => {
     },
   });
 
+  // Dialog handlers
   const handleEmailOpen = () => setOpenEmailDialog(true);
   const handleEmailClose = () => setOpenEmailDialog(false);
 
   const handlePaymentOpen = () => setOpenPaymentDialog(true);
-  const handlePaymentClose = () => setOpenPaymentDialog(false); 
+  const handlePaymentClose = () => setOpenPaymentDialog(false);
 
   const handleFinalizeOpen = () => setOpenFinalize(true);
   const handleFinalizeClose = () => setOpenFinalize(false);
@@ -190,7 +208,6 @@ const VehicleQuotationPage = () => {
 
   const handleEditSave = () => {
     if (editDialog.nested) {
-      // Handle nested object updates
       setQ((prev) => ({
         ...prev,
         [editDialog.field]: {
@@ -199,15 +216,85 @@ const VehicleQuotationPage = () => {
         },
       }));
     } else {
-      // Handle regular field updates
       setQ((prev) => ({ ...prev, [editDialog.field]: editDialog.value }));
     }
     handleEditClose();
   };
 
+  const handleEditValueChange = (e) => {
+    setEditDialog({ ...editDialog, value: e.target.value });
+  };
+
   const handleConfirm = () => {
-    console.log("Vendor:", vendor, "Show All:", showAll);
+    setIsFinalized(true);
     setOpenFinalize(false);
+    setOpenBankDialog(true);
+  };
+
+  const handleBankDialogClose = () => {
+    setOpenBankDialog(false);
+    setAccountType("company");
+    setAccountName("Iconic Yatra");
+    setAccountNumber("");
+    setIfscCode("");
+    setBankName("");
+    setBranchName("");
+  };
+
+  const handleBankConfirm = () => {
+    console.log("Bank details:", {
+      accountType,
+      accountName,
+      accountNumber,
+      ifscCode,
+      bankName,
+      branchName,
+    });
+    handleBankDialogClose();
+  };
+
+  // Add New Bank Functions
+  const handleAddBankOpen = () => {
+    setOpenAddBankDialog(true);
+  };
+
+  const handleAddBankClose = () => {
+    setOpenAddBankDialog(false);
+    setNewBankDetails({
+      bankName: "",
+      branchName: "",
+      accountHolderName: "",
+      accountNumber: "",
+      ifscCode: "",
+      openingBalance: "",
+    });
+  };
+
+  const handleNewBankChange = (field, value) => {
+    setNewBankDetails((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleAddBank = () => {
+    if (
+      !newBankDetails.bankName ||
+      !newBankDetails.accountHolderName ||
+      !newBankDetails.accountNumber
+    ) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    const newAccount = {
+      value: newBankDetails.bankName,
+      label: `${newBankDetails.bankName} - ${newBankDetails.accountHolderName}`,
+    };
+
+    setAccountOptions((prev) => [...prev, newAccount]);
+    setAccountName(newAccount.value);
+    handleAddBankClose();
   };
 
   // Add Service Functions
@@ -219,7 +306,6 @@ const VehicleQuotationPage = () => {
   };
 
   const handleAddService = () => {
-    // If included is "yes", we don't need amount validation
     if (
       !currentService.particulars ||
       (currentService.included === "no" && !currentService.amount)
@@ -233,7 +319,6 @@ const VehicleQuotationPage = () => {
     );
     const taxRate = selectedTax ? selectedTax.rate : 0;
 
-    // If included is "yes", set amount to 0
     const amount =
       currentService.included === "yes" ? 0 : parseFloat(currentService.amount);
     const taxAmount = amount * (taxRate / 100) || 0;
@@ -277,6 +362,10 @@ const VehicleQuotationPage = () => {
 
   const calculateTotalAmount = () => {
     return services.reduce((total, service) => total + service.totalAmount, 0);
+  };
+
+  const handleGenerateInvoice = () => {
+    console.log("Generate Invoice clicked");
   };
 
   const infoMap = {
@@ -372,25 +461,42 @@ const VehicleQuotationPage = () => {
         mb={2}
         flexWrap="wrap"
       >
-        {q.actions.map((a, i) => (
+        {q.actions.map((a, i) => {
+          // Skip the Finalize button if already finalized
+          if (a === "Finalize" && isFinalized) return null;
+
+          return (
+            <Button
+              key={i}
+              variant="contained"
+              onClick={
+                a === "Finalize"
+                  ? handleFinalizeOpen
+                  : a === "Add Service"
+                  ? handleAddServiceOpen
+                  : a === "Email Quotation"
+                  ? handleEmailOpen
+                  : a === "Make Payment"
+                  ? handlePaymentOpen
+                  : undefined
+              }
+            >
+              {a}
+            </Button>
+          );
+        })}
+
+        {/* Add Generate Invoice button if finalized */}
+        {isFinalized && (
           <Button
-            key={i}
             variant="contained"
-            onClick={
-              a === "Finalize"
-                ? handleFinalizeOpen
-                : a === "Add Service"
-                ? handleAddServiceOpen
-                : a === "Email Quotation"
-                ? handleEmailOpen
-                : a === "Make Payment"
-                ? handlePaymentOpen
-                : undefined
-            }
+            color="success"
+            startIcon={<Receipt />}
+            onClick={handleGenerateInvoice}
           >
-            {a}
+            Generate Invoice
           </Button>
-        ))}
+        )}
       </Box>
 
       <Grid container spacing={2}>
@@ -410,7 +516,7 @@ const VehicleQuotationPage = () => {
                     {q.customer.location}
                   </Typography>
                 </Box>
-                <Box display="flex" gap={1} flexWrap="wrap" mb={2}>
+                <Box display="flex" gap={1} sx={{ flexWrap: "wrap", mb: 2 }}>
                   {infoChips.map(({ k, icon }) => (
                     <Chip
                       key={k}
@@ -456,19 +562,40 @@ const VehicleQuotationPage = () => {
         <Grid size={{ xs: 12, md: 9 }}>
           <Card>
             <CardContent>
-              <Box display="flex" alignItems="center">
-                <CalendarToday sx={{ fontSize: 18, mr: 0.5 }} />
-                <Typography variant="body2" fontWeight="bold">
-                  Date: {q.date}
-                </Typography>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Box display="flex" alignItems="center">
+                  <CalendarToday sx={{ fontSize: 18, mr: 0.5 }} />
+                  <Typography variant="body2" fontWeight="bold">
+                    Date: {q.date}
+                  </Typography>
+                </Box>
+
+                {/* Show Confirmation Voucher text if finalized */}
+                {isFinalized && (
+                  <Typography
+                    variant="h6"
+                    color="success.main"
+                    fontWeight="bold"
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <CheckCircle sx={{ mr: 1 }} />
+                    Confirmation Voucher
+                  </Typography>
+                )}
               </Box>
+
               <Box display="flex" alignItems="center" mt={1}>
                 <Description sx={{ fontSize: 18, mr: 0.5 }} />
                 <Typography variant="body2" fontWeight="bold">
                   Ref: {q.reference}
                 </Typography>
               </Box>
-              <Box display="flex" alignItems="center" mt={2}>
+              <Box display="flex" alignItems="center, mt: 2">
                 <Person sx={{ fontSize: 18, mr: 0.5 }} />
                 <Typography variant="subtitle1" fontWeight="bold">
                   Kind Attention: {q.customer.name}
@@ -638,6 +765,7 @@ const VehicleQuotationPage = () => {
                             gutterBottom
                             display="flex"
                             alignItems="center"
+                            sx={{ fontSize: "0.875rem" }}
                           >
                             {p.icon}
                             {p.title}
@@ -677,6 +805,7 @@ const VehicleQuotationPage = () => {
                         gutterBottom
                         display="flex"
                         alignItems="center"
+                        sx={{ fontSize: "0.875rem" }}
                       >
                         <Description sx={{ mr: 0.5 }} />
                         Terms & Condition
@@ -741,7 +870,7 @@ const VehicleQuotationPage = () => {
                   <Business sx={{ mr: 0.5, fontSize: 18 }} />
                   {q.footer.address}
                 </Box>
-                <Box display="flex" alignItems="center" mt={0.5}>
+                <Box display="flex" alignItems="center, mt: 0.5">
                   <Language sx={{ mr: 0.5, fontSize: 18 }} />
                   <a
                     href={q.footer.website}
@@ -762,269 +891,61 @@ const VehicleQuotationPage = () => {
       </Grid>
 
       {/* Finalize Dialog */}
-      <Dialog
+      <FinalizeDialog
         open={openFinalize}
         onClose={handleFinalizeClose}
-        maxWidth="xs"
-        fullWidth
-      >
-        <DialogTitle sx={{ color: "primary.main" }}>Vehicle Vendor</DialogTitle>
-        <DialogContent>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={showAll}
-                onChange={(e) => setShowAll(e.target.checked)}
-              />
-            }
-            label="Show All"
-            sx={{ float: "right", mt: -1 }}
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel required>Vehicle Vendor</InputLabel>
-            <Select
-              value={vendor}
-              onChange={(e) => setVendor(e.target.value)}
-              displayEmpty
-            >
-              <MenuItem value="Default Vehicle Vendor">
-                Default Vehicle Vendor
-              </MenuItem>
-              <MenuItem value="Sukhbir Lepcha">Sukhbir Lepcha</MenuItem>
-              <MenuItem value="Ketan Bhikhu">Ketan Bhikhu</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleConfirm}
-            variant="contained"
-            disabled={!vendor}
-            sx={{ bgcolor: "skyblue", "&:hover": { bgcolor: "deepskyblue" } }}
-          >
-            Confirm
-          </Button>
-          <Button
-            onClick={handleFinalizeClose}
-            variant="contained"
-            sx={{ bgcolor: "darkorange", "&:hover": { bgcolor: "orange" } }}
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+        vendor={vendor}
+        setVendor={setVendor}
+        onConfirm={handleConfirm}
+      />
+
+      {/* Bank Details Dialog */}
+      <BankDetailsDialog
+        open={openBankDialog}
+        onClose={handleBankDialogClose}
+        accountType={accountType}
+        setAccountType={setAccountType}
+        accountName={accountName}
+        setAccountName={setAccountName}
+        accountOptions={accountOptions}
+        onAddBankOpen={handleAddBankOpen}
+        onConfirm={handleBankConfirm}
+      />
+
+      {/* Add New Bank Dialog */}
+      <AddBankDialog
+        open={openAddBankDialog}
+        onClose={handleAddBankClose}
+        newBankDetails={newBankDetails}
+        onNewBankChange={handleNewBankChange}
+        onAddBank={handleAddBank}
+      />
 
       {/* Edit Dialog */}
-      <Dialog
+      <EditDialog
         open={editDialog.open}
         onClose={handleEditClose}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle sx={{ color: "primary.main" }}>
-          Edit {editDialog.title}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label={editDialog.title}
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={editDialog.value}
-            onChange={(e) =>
-              setEditDialog({ ...editDialog, value: e.target.value })
-            }
-            multiline
-            maxRows={4}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleEditSave}
-            variant="contained"
-            sx={{ bgcolor: "skyblue", "&:hover": { bgcolor: "deepskyblue" } }}
-          >
-            Save
-          </Button>
-          <Button
-            onClick={handleEditClose}
-            variant="contained"
-            sx={{ bgcolor: "darkorange", "&:hover": { bgcolor: "orange" } }}
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+        title={editDialog.title}
+        value={editDialog.value}
+        onValueChange={handleEditValueChange}
+        onSave={handleEditSave}
+      />
 
       {/* Add Service Dialog */}
-      <Dialog
+      <AddServiceDialog
         open={openAddService}
         onClose={handleAddServiceClose}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle
-          sx={{ color: "primary.main", display: "flex", alignItems: "center" }}
-        >
-          <Add sx={{ mr: 1 }} />
-          Add Service
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 2 }}>
-            <FormControl component="fieldset" sx={{ mb: 2 }}>
-              <FormLabel component="legend">*Included In Quotation</FormLabel>
-              <RadioGroup
-                row
-                value={currentService.included}
-                onChange={(e) =>
-                  handleServiceChange("included", e.target.value)
-                }
-              >
-                <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                <FormControlLabel value="no" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl>
+        currentService={currentService}
+        onServiceChange={handleServiceChange}
+        services={services}
+        onAddService={handleAddService}
+        onClearService={handleClearService}
+        onRemoveService={handleRemoveService}
+        onSaveServices={handleSaveServices}
+        taxOptions={taxOptions}
+      />
 
-            <TextField
-              fullWidth
-              label="*Particulars"
-              value={currentService.particulars}
-              onChange={(e) =>
-                handleServiceChange("particulars", e.target.value)
-              }
-              margin="normal"
-            />
-
-            <Box display="flex" gap={2}>
-              <TextField
-                fullWidth
-                label="*Amount"
-                type="number"
-                value={currentService.amount}
-                onChange={(e) => handleServiceChange("amount", e.target.value)}
-                margin="normal"
-                disabled={currentService.included === "yes"}
-                placeholder={
-                  currentService.included === "yes"
-                    ? "Included in quotation"
-                    : ""
-                }
-              />
-              <FormControl fullWidth margin="normal">
-                <InputLabel>*Tax %</InputLabel>
-                <Select
-                  value={currentService.taxType}
-                  onChange={(e) =>
-                    handleServiceChange("taxType", e.target.value)
-                  }
-                  label="*Tax %"
-                >
-                  {taxOptions.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-
-            {services.length > 0 && (
-              <Box sx={{ mt: 3 }}>
-                <Typography variant="h6" gutterBottom>
-                  Added Services
-                </Typography>
-                <TableContainer component={Paper} variant="outlined">
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Included</TableCell>
-                        <TableCell>Particulars</TableCell>
-                        <TableCell align="right">Amount</TableCell>
-                        <TableCell align="right">Tax</TableCell>
-                        <TableCell align="right">Total</TableCell>
-                        <TableCell>Action</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {services.map((service) => (
-                        <TableRow key={service.id}>
-                          <TableCell>
-                            {service.included === "yes" ? "Yes" : "No"}
-                          </TableCell>
-                          <TableCell>{service.particulars}</TableCell>
-                          <TableCell align="right">
-                            {service.included === "yes"
-                              ? "Included"
-                              : `₹${service.amount}`}
-                          </TableCell>
-                          <TableCell align="right">
-                            {service.taxLabel}
-                          </TableCell>
-                          <TableCell align="right">
-                            {service.included === "yes"
-                              ? "Included"
-                              : `₹${service.totalAmount.toFixed(2)}`}
-                          </TableCell>
-                          <TableCell>
-                            <IconButton
-                              size="small"
-                              onClick={() => handleRemoveService(service.id)}
-                              color="error"
-                            >
-                              <Delete fontSize="small" />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-
-                <Box
-                  sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}
-                >
-                  <Typography variant="h6">
-                    Total Amount: ₹{calculateTotalAmount().toFixed(2)}
-                  </Typography>
-                </Box>
-              </Box>
-            )}
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleAddService}
-            variant="outlined"
-            startIcon={<Add />}
-          >
-            Add More
-          </Button>
-          <Button
-            onClick={handleClearService}
-            variant="outlined"
-            color="secondary"
-          >
-            Clear
-          </Button>
-          <Button
-            onClick={handleSaveServices}
-            variant="contained"
-            sx={{ bgcolor: "skyblue", "&:hover": { bgcolor: "deepskyblue" } }}
-          >
-            Save
-          </Button>
-          <Button
-            onClick={handleAddServiceClose}
-            variant="contained"
-            sx={{ bgcolor: "darkorange", "&:hover": { bgcolor: "orange" } }}
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-           {/* Email Quotation Dialog */}
+      {/* Email Quotation Dialog */}
       <EmailQuotationDialog
         open={openEmailDialog}
         onClose={handleEmailClose}
