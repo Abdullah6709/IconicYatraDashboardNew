@@ -30,6 +30,7 @@ import {
   FlightClass,
   AirplaneTicket,
 } from "@mui/icons-material";
+import jsPDF from "jspdf";
 
 const FlightFinalize = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -53,6 +54,7 @@ const FlightFinalize = () => {
       price: "₹ 25,000",
       baggage: "20kg",
       class: "Economy",
+      type: "One Way",
     },
   };
 
@@ -62,42 +64,45 @@ const FlightFinalize = () => {
     setOpenSnackbar(true);
   };
 
-  const handleDownloadPDF = () => {
-    const pdfContent = `
-      FLIGHT QUOTATION
-      =================
-      Reference No: ${quotation.refNo}
-      Date: ${quotation.date}
-      Customer: ${quotation.customer}
-      Country: ${quotation.country}
-      From: ${quotation.flight.from} To: ${quotation.flight.to}
-      Airline: ${quotation.flight.airline}
-      Date: ${quotation.flight.date} Time: ${quotation.flight.time}
-      Flight No: ${quotation.flight.flightNo} PNR: ${quotation.flight.pnr}
-      Passengers: ${quotation.flight.passengers}
-      Class: ${quotation.flight.class} Baggage: ${quotation.flight.baggage}
-      Price: ${quotation.flight.price}
-      Status: ${bookingStatus}
-      Generated on: ${new Date().toLocaleDateString()}
-    `;
-    const blob = new Blob([pdfContent], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Flight_Quotation_${quotation.refNo}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 100);
-  };
+  
+
+const handleDownloadPDF = () => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.text("FLIGHT QUOTATION", 20, 20);
+  doc.setFontSize(12);
+
+  doc.text(`Reference No: ${quotation.refNo}`, 20, 30);
+  doc.text(`Date: ${quotation.date}`, 20, 40);
+  doc.text(`Customer: ${quotation.customer}`, 20, 50);
+  doc.text(`Country: ${quotation.country}`, 20, 60);
+
+  doc.text(`From: ${quotation.flight.from}`, 20, 70);
+  doc.text(`To: ${quotation.flight.to}`, 20, 80);
+  doc.text(`Airline: ${quotation.flight.airline}`, 20, 90);
+  doc.text(`Date: ${quotation.flight.date}`, 20, 100);
+  doc.text(`Time: ${quotation.flight.time}`, 20, 110);
+  doc.text(`Flight No: ${quotation.flight.flightNo}`, 20, 120);
+  doc.text(`PNR: ${quotation.flight.pnr}`, 20, 130);
+  doc.text(`Passengers: ${quotation.flight.passengers}`, 20, 140);
+  doc.text(`Class: ${quotation.flight.class}`, 20, 150);
+  doc.text(`Baggage: ${quotation.flight.baggage}`, 20, 160);
+  doc.text(`Price: ${quotation.flight.price}`, 20, 170);
+  doc.text(`Status: ${bookingStatus}`, 20, 180);
+
+  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 190);
+
+  doc.save(`Flight_Quotation_${quotation.refNo}.pdf`);
+};
+
 
   return (
     <>
       <Grid container>
         {/* Sidebar */}
-        <Grid size={{xs:12, md:3}}
+        <Grid
+          size={{ xs: 12, md: 3 }}
           sx={{
             borderRight: { md: "1px solid #ddd" },
             p: 3,
@@ -163,7 +168,7 @@ const FlightFinalize = () => {
         </Grid>
 
         {/* Content */}
-        <Grid size={{xs:12, md:9}} sx={{ p: 3 }}>
+        <Grid size={{ xs: 12, md: 9 }} sx={{ p: 3 }}>
           <Box display="flex" gap={2} mb={3}>
             <Button
               variant="contained"
@@ -201,8 +206,8 @@ const FlightFinalize = () => {
           <Paper variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
             <Box display="flex" alignItems="center" mb={2}>
               <Flight sx={{ color: "orange", mr: 1 }} />
-              <Typography variant="h6" color="orange">
-                <b>Flight Booking Details (One Way)</b>
+              <Typography variant="h6" sx={{ color: "orange" }}>
+                <b>Flight Booking Details ({quotation.flight.type})</b>
               </Typography>
             </Box>
             <Grid container spacing={2}>
@@ -222,7 +227,7 @@ const FlightFinalize = () => {
                 [<Group />, "Passengers", quotation.flight.passengers],
                 [<AttachMoney />, "Total Price", quotation.flight.price, true],
               ].map(([Icon, label, value, highlight], i) => (
-                <Grid size={{xs:12, md:6}} key={i}>
+                <Grid size={{ xs: 12, md: 6 }} key={i}>
                   <Box display="flex" alignItems="center" mb={1}>
                     <Box color="primary.main" mr={1}>
                       {Icon}
