@@ -18,15 +18,15 @@ import {
   CalendarToday,
   Storage,
 } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DashboardHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const location = useLocation();
+  const navigate = useNavigate();
 
-  
   const pageTitles = {
     "/": "Dashboard",
     "/lead": "Leads Manager",
@@ -55,7 +55,7 @@ const DashboardHeader = () => {
           py: isMobile ? 1 : 0,
         }}
       >
-      
+        {/* Left Section */}
         <Box
           sx={{
             display: "flex",
@@ -67,10 +67,15 @@ const DashboardHeader = () => {
           }}
         >
           <IconButton
+            onClick={() => location.pathname !== "/" && navigate(-1)}
+            disabled={location.pathname === "/"}
             sx={{
-              bgcolor: "primary.main",
-              color: "#fff",
-              "&:hover": { bgcolor: "primary.dark" },
+              bgcolor: location.pathname === "/" ? "grey.300" : "primary.main",
+              color: location.pathname === "/" ? "text.disabled" : "#fff",
+              "&:hover": {
+                bgcolor:
+                  location.pathname === "/" ? "grey.300" : "primary.dark",
+              },
               width: 36,
               height: 36,
             }}
