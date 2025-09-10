@@ -26,6 +26,7 @@ import FullQuotation from "../Pages/Admin/Quotation/FullQuotation/fullquotation"
 import CustomQuotation from "../Pages/Admin/Quotation/CustomQuotation/customquotation";
 import FlightFinalize from "../Pages/Admin/Quotation/FlightQuotation/FlightFinalize";
 import VehicleFinalize from "../Pages/Admin/Quotation/VehicleQuotation/VehicleFinalize";
+import HotelQuotationStep2 from "../Pages/Admin/Quotation/HotelQuotation/HotelQuotationStep2";
 //import StaffFormDetail from "../Pages/Admin/Staff/Form/StaffFormDetail";
 const MainRoute = () => {
   const isAuthenticated = true;
@@ -75,6 +76,7 @@ const MainRoute = () => {
         <Route path="/staff" element={<StaffCard />} />
         <Route path="/staffform" element={<StaffForm />} />
         {/* <Route path="/staff/staffdetail" element={<StaffFormDetail />} /> */}
+
       </Routes>
     </DashboardLayout>
   ) : (
