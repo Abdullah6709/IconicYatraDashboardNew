@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import RoomIcon from "@mui/icons-material/Room";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import HotelQuotationStep3 from "./HotelQuotationStep3";
 
 const initialLocations = [
   "Aritar",
@@ -26,6 +27,7 @@ const HotelQuotationStep2 = () => {
   const [selectedState, setSelectedState] = useState("Sikkim");
   const [locations, setLocations] = useState(initialLocations);
   const [stayLocations, setStayLocations] = useState([]);
+  const [showStep3, setShowStep3] = useState(false);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
@@ -73,12 +75,15 @@ const HotelQuotationStep2 = () => {
     }
   };
 
-  // Handle nights input change
   const handleNightsChange = (index, value) => {
     const updated = [...stayLocations];
     updated[index].nights = value;
     setStayLocations(updated);
   };
+
+  if (showStep3) {
+    return <HotelQuotationStep3 />;
+  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -158,7 +163,7 @@ const HotelQuotationStep2 = () => {
           </Grid>
 
           {/* Right: Stay Locations */}
-          <Grid size={{xs:12,md:6}}>
+          <Grid size={{xs:12, md:6}}>
             <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
               Stay Locations
             </Typography>
@@ -231,8 +236,12 @@ const HotelQuotationStep2 = () => {
       </DragDropContext>
 
       {/* Save Button */}
-      <Box sx={{ textAlign: "center", mt: 4 }}>
-        <Button variant="contained" color="primary">
+      <Box textAlign="center" sx={{ mt: 3 }}>
+        <Button
+          variant="contained"
+          sx={{ px: 4, py: 1.5, borderRadius: 2 }}
+          onClick={() => setShowStep3(true)}
+        >
           Save & Continue
         </Button>
       </Box>

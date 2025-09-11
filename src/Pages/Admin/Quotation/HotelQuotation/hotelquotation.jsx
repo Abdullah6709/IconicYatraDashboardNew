@@ -26,11 +26,42 @@ import HotelQuotationStep2 from "./HotelQuotationStep2";
 
 const data = {
   clients: ["Client A", "Client B", "Client C"],
-  sectors: ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Manipur"],
-  countries: ["United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Japan", "Singapore", "Thailand", "UAE"],
+  sectors: [
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chhattisgarh",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Manipur",
+  ],
+  countries: [
+    "United States",
+    "United Kingdom",
+    "Canada",
+    "Australia",
+    "France",
+    "Germany",
+    "Japan",
+    "Singapore",
+    "Thailand",
+    "UAE",
+  ],
   cities: ["Delhi", "Mumbai", "Chennai"],
   locations: ["Airport", "Railway Station", "Hotel"],
-  services: ["Air Ticket", "Bus Ticket", "Covid Pass", "Cruise", "Hotel", "Vehicle", "Visa"],
+  services: [
+    "Air Ticket",
+    "Bus Ticket",
+    "Covid Pass",
+    "Cruise",
+    "Hotel",
+    "Vehicle",
+    "Visa",
+  ],
   hotelTypes: ["3 Star", "4 Star", "5 Star"],
   mealPlans: ["Breakfast Only", "Half Board", "Full Board"],
   sharingTypes: ["Single", "Double", "Triple"],
@@ -46,8 +77,18 @@ const validationSchema = Yup.object({
 });
 
 const Section = ({ title, children }) => (
-  <Paper sx={{ p: 3, mb: 3, borderRadius: 2, backgroundColor: "#fafafa", boxShadow: 2 }}>
-    <Typography variant="subtitle1" fontWeight="bold" gutterBottom>{title}</Typography>
+  <Paper
+    sx={{
+      p: 3,
+      mb: 3,
+      borderRadius: 2,
+      backgroundColor: "#fafafa",
+      boxShadow: 2,
+    }}
+  >
+    <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+      {title}
+    </Typography>
     <Grid container spacing={2} sx={{ mt: 1 }}>
       {children}
     </Grid>
@@ -58,15 +99,12 @@ const QuotationForm = () => {
   const [servicesList, setServicesList] = useState(data.services);
   const [openDialog, setOpenDialog] = useState(false);
   const [newService, setNewService] = useState("");
-  
- 
   const [showStep2, setShowStep2] = useState(false);
-
   const formik = useFormik({
     initialValues: {
       clientName: "",
       tourType: "Domestic",
-      sector: "",
+      sector: "", 
       showCostPerAdult: false,
       services: [],
       adults: "",
@@ -91,13 +129,14 @@ const QuotationForm = () => {
       validTill: null,
       createBy: "New Quotation",
       quotationTitle: "",
-      initialNotes: "This is only tentative schedule for sightseeing and travel. Actual sightseeing may get affected due to weather, road conditions, local authority notices, shortage of timing, or off days.",
+      initialNotes:
+        "This is only tentative schedule for sightseeing and travel. Actual sightseeing may get affected due to weather, road conditions, local authority notices, shortage of timing, or off days.",
       banner: null,
     },
     validationSchema,
     onSubmit: (values) => {
       console.log("Form Data:", values);
-      setShowStep2(true); 
+      setShowStep2(true);
     },
   });
 
@@ -114,12 +153,19 @@ const QuotationForm = () => {
   const pickupDropFields = [
     { name: "arrivalDate", label: "Arrival Date", type: "date" },
     { name: "arrivalCity", label: "Arrival City", options: data.cities },
-    { name: "arrivalLocation", label: "Arrival Location", options: data.locations },
+    {
+      name: "arrivalLocation",
+      label: "Arrival Location",
+      options: data.locations,
+    },
     { name: "departureDate", label: "Departure Date", type: "date" },
     { name: "departureCity", label: "Departure City", options: data.cities },
-    { name: "departureLocation", label: "Departure Location", options: data.locations },
+    {
+      name: "departureLocation",
+      label: "Departure Location",
+      options: data.locations,
+    },
   ];
-
 
   if (showStep2) {
     return <HotelQuotationStep2 />;
@@ -127,7 +173,7 @@ const QuotationForm = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         {/* Client Details */}
         <Section title="Client Details">
           <Grid size={{ xs: 6 }}>
@@ -460,8 +506,12 @@ const QuotationForm = () => {
           </Grid>
         </Section>
 
-         <Box textAlign="center" sx={{ mt: 3 }}>
-          <Button type="submit" variant="contained" sx={{ px: 4, py: 1.5, borderRadius: 2 }}>
+        <Box textAlign="center" sx={{ mt: 3 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ px: 4, py: 1.5, borderRadius: 2 }}
+          >
             Save & Continue
           </Button>
         </Box>
@@ -481,7 +531,9 @@ const QuotationForm = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={handleAddService} variant="contained">Add</Button>
+          <Button onClick={handleAddService} variant="contained">
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
     </LocalizationProvider>
