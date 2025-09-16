@@ -128,6 +128,21 @@ const initialStaffList = [
     formStatus: "FlightQuotation",
     businessType: "B2C",
   },
+  {
+    id: 6,
+    quoteId: "Q-1006",
+    clientName: "Mikal Brown",
+    arrival: "2025-01-04",
+    departure: "2025-01-06",
+    sector: "Europe",
+    title: "Villa Retreat",
+    noOfNight: 4,
+    tourType: "Hotel",
+    type: "Custom",
+    quotationStatus: "Approved",
+    formStatus: "HotelQuotation",
+    businessType: "B2C",
+  },
 ];
 
 const QuotationCard = () => {
@@ -288,10 +303,14 @@ const QuotationCard = () => {
               autoHeight
               disableRowSelectionOnClick
               onRowClick={(params) => {
-                if (params.row.formStatus === "FlightQuotation") {
+                const status = params.row.formStatus.toLowerCase();
+
+                if (status === "flightquotation") {
                   navigate("/flightfinalize");
-                } else if (params.row.formStatus === "vehiclequotation") {
+                } else if (status === "vehiclequotation") {
                   navigate("/vehiclefinalize");
+                } else if (status === "hotelquotation") {
+                  navigate("/hotelfinalize");
                 } else {
                   navigate(`/quotation/${params.row.id}`);
                 }

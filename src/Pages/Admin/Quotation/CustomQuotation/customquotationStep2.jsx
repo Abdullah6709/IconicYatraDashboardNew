@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -9,14 +9,17 @@ import {
   Paper,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import * as Yup from "yup";
+import CustomQuotationStep3 from "./customquotationStep3";
 
 const cities = ["Delhi", "Mumbai", "Bangalore", "Kolkata"];
 
-const CustomQuotationStep2 = ({ onClose }) => {
+const CustomQuotationStep2 = () => {
+  const [showStep3, setShowStep3] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       cities: [
@@ -39,9 +42,14 @@ const CustomQuotationStep2 = ({ onClose }) => {
       ),
     }),
     onSubmit: (values) => {
-      console.log("Form Submitted:", values);
+      console.log("Step 2 Submitted:", values);
+      setShowStep3(true); // open Step 3 form
     },
   });
+
+  if (showStep3) {
+    return <CustomQuotationStep3 />;
+  }
 
   return (
     <Paper
@@ -54,14 +62,6 @@ const CustomQuotationStep2 = ({ onClose }) => {
         margin: "auto",
       }}
     >
-      {/* Close Button */}
-      <IconButton
-        onClick={onClose}
-        sx={{ position: "absolute", top: 8, right: 8 }}
-      >
-        <CloseIcon color="primary" />
-      </IconButton>
-
       {/* Title */}
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Custom Quotation
@@ -77,7 +77,7 @@ const CustomQuotationStep2 = ({ onClose }) => {
       </Typography>
 
       <FormikProvider value={formik}>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit}> 
           <FieldArray
             name="cities"
             render={(arrayHelpers) => (
@@ -91,7 +91,7 @@ const CustomQuotationStep2 = ({ onClose }) => {
                     sx={{ mb: 1 }}
                   >
                     {/* City Name */}
-                    <Grid size={{ xs: 12, md: 5 }}>
+                    <Grid size={{xs:12, md:5}}>
                       <TextField
                         fullWidth
                         select
@@ -118,7 +118,7 @@ const CustomQuotationStep2 = ({ onClose }) => {
                     </Grid>
 
                     {/* No. of Nights */}
-                    <Grid size={{ xs: 12, md: 5 }}>
+                    <Grid size={{xs:12, md:5}}>
                       <TextField
                         fullWidth
                         type="number"
@@ -139,7 +139,7 @@ const CustomQuotationStep2 = ({ onClose }) => {
                     </Grid>
 
                     {/* Delete Button */}
-                    <Grid size={{ xs: 12, md: 2 }}>
+                    <Grid size={{xs:12, md:2}}>
                       <IconButton
                         color="error"
                         onClick={() => arrayHelpers.remove(index)}
@@ -168,7 +168,7 @@ const CustomQuotationStep2 = ({ onClose }) => {
             )}
           />
 
-          {/* Submit */}
+          {/* Next Button */}
           <Box textAlign="center">
             <Button type="submit" variant="contained" color="info">
               Next

@@ -13,7 +13,6 @@ import {
   IconButton,
 } from "@mui/material";
 
-import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import CustomQuotationStep2 from "./customquotationStep2";
@@ -23,7 +22,7 @@ const clients = ["Client A", "Client B", "Client C"];
 const domesticSectors = ["Delhi", "Mumbai", "Bangalore", "Kolkata"];
 const internationalSectors = ["USA", "UK", "France", "Australia"];
 
-const CustomQuotation = ({ onClose }) => {
+const CustomQuotation = () => {
   const [showStep2, setShowStep2] = useState(false);
 
   const formik = useFormik({
@@ -64,14 +63,7 @@ const CustomQuotation = ({ onClose }) => {
         justifyContent: "center",
       }}
     >
-      {/* Close Button */}
-      <IconButton
-        onClick={onClose}
-        sx={{ position: "absolute", top: 8, right: 8 }}
-      >
-        <CloseIcon color="primary" />
-      </IconButton>
-
+      
       {/* Title */}
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Custom Quotation
@@ -168,7 +160,7 @@ const CustomQuotation = ({ onClose }) => {
                 variant="contained"
                 sx={{ px: 4, py: 1.5, borderRadius: 2 }}
               >
-                Save
+                 Save & Continue
               </Button>
             </Box>
           </Grid>
