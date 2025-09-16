@@ -58,6 +58,7 @@ import BankDetailsDialog from "../VehicleQuotation/Dialog/BankDetailsDialog";
 import AddBankDialog from "../VehicleQuotation/Dialog/AddBankDialog";
 import EditDialog from "../VehicleQuotation/Dialog/EditDialog";
 import AddServiceDialog from "../VehicleQuotation/Dialog/AddServiceDialog";
+ import AddFlightDialog from "../HotelQuotation/Dialog/FlightDialog"; 
 
 // Initial data separated into individual objects for better organization
 const initialCustomer = {
@@ -125,6 +126,7 @@ const initialActions = [
   "Email Quotation",
   "Preview PDF",
   "Make Payment",
+  "Add Flight", // Add this line
 ];
 
 // Hotel pricing table data
@@ -217,6 +219,8 @@ const HotelFinalize = () => {
   const [openEmailDialog, setOpenEmailDialog] = useState(false);
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openBankDialog, setOpenBankDialog] = useState(false);
+  const [openAddFlight, setOpenAddFlight] = useState(false); // Add this state
+  const [flights, setFlights] = useState([]); // Add this state
 
   // Bank details state
   const [accountType, setAccountType] = useState("company");
@@ -445,6 +449,14 @@ const HotelFinalize = () => {
   const handlePaymentClose = () => setOpenPaymentDialog(false);
   const handleFinalizeOpen = () => setOpenFinalize(true);
   const handleFinalizeClose = () => setOpenFinalize(false);
+  
+  // Add flight handlers
+  const handleAddFlightOpen = () => setOpenAddFlight(true);
+  const handleAddFlightClose = () => setOpenAddFlight(false);
+  const handleAddFlight = (flightDetails) => {
+    setFlights((prev) => [...prev, { ...flightDetails, id: Date.now() }]);
+    console.log("Flight added:", flightDetails);
+  };
 
   // Constants for UI rendering
   const infoMap = {
@@ -539,6 +551,16 @@ const HotelFinalize = () => {
     "Superior",
   ];
 
+  // Action handlers
+  const actionHandlers = {
+    Finalize: handleFinalizeOpen,
+    "Add Service": handleAddServiceOpen,
+    "Email Quotation": handleEmailOpen,
+    "Preview PDF": () => console.log("Preview PDF clicked"),
+    "Make Payment": handlePaymentOpen,
+    "Add Flight": handleAddFlightOpen, // Add this line
+  };
+
   return (
     <Box>
       <Box
@@ -550,14 +572,6 @@ const HotelFinalize = () => {
       >
         {quotation.actions.map((a, i) => {
           if (a === "Finalize" && isFinalized) return null;
-
-          const actionHandlers = {
-            Finalize: handleFinalizeOpen,
-            "Add Service": handleAddServiceOpen,
-            "Email Quotation": handleEmailOpen,
-            "Make Payment": handlePaymentOpen,
-            "Add Flight": handlePaymentOpen,
-          };
 
           return (
             <Button key={i} variant="contained" onClick={actionHandlers[a]}>
@@ -590,6 +604,7 @@ const HotelFinalize = () => {
       </Box>
 
       <Grid container spacing={2}>
+        
         <Grid size={{ xs: 12, md: 3 }}>
           <Box sx={{ position: "sticky", top: 0 }}>
             <Card>
@@ -702,11 +717,11 @@ const HotelFinalize = () => {
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
+                  mb={1}
                 >
                   <Typography
                     variant="subtitle2"
                     fontWeight="bold"
-                    gutterBottom
                     display="flex"
                     alignItems="center"
                     sx={{ fontSize: "0.875rem" }}
@@ -1092,6 +1107,12 @@ const HotelFinalize = () => {
         onRemoveService={handleRemoveService}
         onSaveServices={handleSaveServices}
         taxOptions={taxOptions}
+      />
+
+      <AddFlightDialog // Add this dialog
+        open={openAddFlight}
+        onClose={handleAddFlightClose}
+        onSave={handleAddFlight}
       />
 
       <EmailQuotationDialog
