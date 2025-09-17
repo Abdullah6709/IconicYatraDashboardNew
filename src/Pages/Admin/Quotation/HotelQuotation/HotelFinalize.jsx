@@ -58,7 +58,7 @@ import BankDetailsDialog from "../VehicleQuotation/Dialog/BankDetailsDialog";
 import AddBankDialog from "../VehicleQuotation/Dialog/AddBankDialog";
 import EditDialog from "../VehicleQuotation/Dialog/EditDialog";
 import AddServiceDialog from "../VehicleQuotation/Dialog/AddServiceDialog";
- import AddFlightDialog from "../HotelQuotation/Dialog/FlightDialog"; 
+import AddFlightDialog from "../HotelQuotation/Dialog/FlightDialog";
 
 // Initial data separated into individual objects for better organization
 const initialCustomer = {
@@ -219,8 +219,8 @@ const HotelFinalize = () => {
   const [openEmailDialog, setOpenEmailDialog] = useState(false);
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openBankDialog, setOpenBankDialog] = useState(false);
-  const [openAddFlight, setOpenAddFlight] = useState(false); // Add this state
-  const [flights, setFlights] = useState([]); // Add this state
+  const [openAddFlight, setOpenAddFlight] = useState(false);
+  const [flights, setFlights] = useState([]);
 
   // Bank details state
   const [accountType, setAccountType] = useState("company");
@@ -449,7 +449,7 @@ const HotelFinalize = () => {
   const handlePaymentClose = () => setOpenPaymentDialog(false);
   const handleFinalizeOpen = () => setOpenFinalize(true);
   const handleFinalizeClose = () => setOpenFinalize(false);
-  
+
   // Add flight handlers
   const handleAddFlightOpen = () => setOpenAddFlight(true);
   const handleAddFlightClose = () => setOpenAddFlight(false);
@@ -604,8 +604,23 @@ const HotelFinalize = () => {
       </Box>
 
       <Grid container spacing={2}>
-        
-        <Grid size={{ xs: 12, md: 3 }}>
+        <Grid
+          size={{ xs: 12, md: 3 }}
+          sx={{
+            borderRight: { md: "1px solid #ddd" },
+            pt: 3,
+            minHeight: "100vh",
+            bgcolor: "#f8f9fa",
+            textAlign: "center",
+          }}
+        >
+          <Chip
+            icon={<HotelIcon />}
+            label="Hotel Quotation"
+            color="primary"
+            variant="outlined"
+            sx={{ mb: 3 }}
+          />
           <Box sx={{ position: "sticky", top: 0 }}>
             <Card>
               <CardContent>

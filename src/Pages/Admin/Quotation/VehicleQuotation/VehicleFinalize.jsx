@@ -43,7 +43,7 @@ import {
   ExpandMore,
   Edit,
   Receipt,
-  Visibility, // Added for View Invoice icon
+  Visibility,
 } from "@mui/icons-material";
 import EmailQuotationDialog from "././Dialog/EmailQuotationDialog";
 import MakePaymentDialog from "././Dialog/MakePaymentDialog";
@@ -525,7 +525,23 @@ const VehicleQuotationPage = () => {
       </Box>
 
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 3 }}>
+        <Grid
+          size={{ xs: 12, md: 3 }}
+          sx={{
+            borderRight: { md: "1px solid #ddd" },
+            pt: 3,
+            minHeight: "100vh",
+            bgcolor: "#f8f9fa",
+            textAlign: "center",
+          }}
+        >
+          <Chip
+            icon={<DirectionsCar />}
+            label="Vehicle Quotation"
+            color="primary"
+            variant="outlined"
+            sx={{ mb: 3 }}
+          />
           <Box sx={{ position: "sticky", top: 0 }}>
             <Card>
               <CardContent>

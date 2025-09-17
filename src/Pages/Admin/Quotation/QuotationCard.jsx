@@ -143,6 +143,21 @@ const initialStaffList = [
     formStatus: "HotelQuotation",
     businessType: "B2C",
   },
+  {
+    id: 7,
+    quoteId: "Q-1007",
+    clientName: "Emma Davis",
+    arrival: "2025-01-04",
+    departure: "2025-01-06",
+    sector: "Europe",
+    title: "Villa Retreat",
+    noOfNight: 4,
+    tourType: "Custom",
+    type: "Package",
+    quotationStatus: "Approved",
+    formStatus: "CustomQuotation",
+    businessType: "B2C",
+  },
 ];
 
 const QuotationCard = () => {
@@ -311,7 +326,10 @@ const QuotationCard = () => {
                   navigate("/vehiclefinalize");
                 } else if (status === "hotelquotation") {
                   navigate("/hotelfinalize");
-                } else {
+                } else if (status === "customquotation") {
+                  navigate("/customfinalize");
+                }
+                 else {
                   navigate(`/quotation/${params.row.id}`);
                 }
               }}
