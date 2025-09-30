@@ -20,6 +20,7 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import CustomQuotationStep6 from "../CustomQuotation/customquotationStep6";
 
 // Validation Schema
 const validationSchema = Yup.object({
@@ -46,6 +47,7 @@ const CustomQuotationStep5 = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [newValue, setNewValue] = useState("");
   const [fieldType, setFieldType] = useState("");
+  const [showStep6, setShowStep6] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -67,9 +69,14 @@ const CustomQuotationStep5 = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("Form submitted:", values);
+      console.log("Step 5 Submitted:", values);
+      setShowStep6(true); // switch to Step 6
     },
   });
+
+  if (showStep6) {
+    return <CustomQuotationStep6 />;
+  }
 
   // Handle dropdown change
   const handleClientChange = (event) => {
@@ -312,11 +319,13 @@ const CustomQuotationStep5 = () => {
           </Box>
 
           {/* Submit */}
-          <Box textAlign="center" mt={2}>
-            <Button type="submit" variant="contained" color="primary">
-              Submit
-            </Button>
-          </Box>
+          <Grid container>
+            <Grid size={{ xs: 12 }} textAlign="center">
+              <Button type="submit" variant="contained" color="primary">
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </Box>
 
